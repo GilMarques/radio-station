@@ -1,0 +1,22 @@
+<div class="app-layout">
+  <div class="main-row">
+    <aside class="sidebar">
+      <app-sidebar (showWorldMap)="showWorldMapDialog()"></app-sidebar>
+    </aside>
+
+    <div class="main-column">
+      <app-navbar></app-navbar>
+
+      <main class="main-content">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+
+  <app-world-filter
+    [worldMapVisible]="worldMapVisible"
+    (close)="worldMapVisible = false"
+  ></app-world-filter>
+
+  <app-footer></app-footer>
+</div>

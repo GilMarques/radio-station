@@ -1,0 +1,50 @@
+<div class="world-list-container flex flex-col h-full">
+  <div class="search-bar mb-4 sticky top-0 z-10 bg-white">
+    <p-inputgroup>
+      <p-inputgroup-addon>
+        <i class="fas fa-magnifying-glass"></i>
+      </p-inputgroup-addon>
+      <input
+        type="search"
+        pInputText
+        [(ngModel)]="searchTerm"
+        class="w-full"
+        (ngModelChange)="onSearch($event)"
+      />
+    </p-inputgroup>
+  </div>
+  <div class="list-section overflow-y-auto flex-1">
+    @for (continentEntry of filteredCountries$ | async; track
+    continentEntry.label) {
+    <div *ngIf="continentEntry.items.length > 0" class="continent-section mb-5">
+      <h1 class="continent-title text-2xl">{{ continentEntry.label }}</h1>
+      <div class="flex flex-col gap-5">
+        <div
+          *ngFor="let country of continentEntry.items"
+          class="hover:underline select-none"
+          (click)="onCountrySelect(country)"
+          (mouseenter)="onCountryMouseEnter(country)"
+          (mouseleave)="onCountryMouseLeave()"
+        >
+          <img
+            [src]="
+              'https://flagcdn.com/w40/' +
+              country.iso_3166_1.toLowerCase() +
+              '.png'
+            "
+            alt="{{ country.iso_3166_1 }}"
+            class="rounded-md inline-block w-[40px] pointer-none"
+          />
+          <a class="country-name ml-2">{{ country.name }}</a>
+
+          <a
+            class="bg-gray-200 rounded-full px-2 py-1 text-xs ml-2"
+            style="text-decoration: none !important"
+            >{{ country.stationcount }}</a
+          >
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

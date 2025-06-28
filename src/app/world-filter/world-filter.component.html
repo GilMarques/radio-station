@@ -1,0 +1,33 @@
+<p-dialog
+  [(visible)]="worldMapVisible"
+  [modal]="true"
+  [style]="{ width: '80vw', height: '80vh' }"
+  [styleClass]="'bg-surface-100'"
+  (onHide)="onDialogHide()"
+  [dismissableMask]="true"
+  [draggable]="false"
+>
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <span class="font-bold whitespace-nowrap">World Map</span>
+    </div>
+  </ng-template>
+
+  <div class="flex h-full gap-2" *ngIf="worldMapVisible">
+    <app-world-list
+      [countriesByContinent]="radioBrowserCountriesByContinent"
+      (selectedCountry)="onSelectedCountry($event)"
+      (hoveredCountry)="onHoveredCountry($event)"
+      (unhoveredCountry)="onUnhoveredCountry()"
+    ></app-world-list>
+    <app-world-map
+      #worldMap
+      class="flex-1 world-map rounded-lg"
+      [countryList]="countryList"
+      [hoveredCountry]="hoveredCountry()"
+      [selectedCountry]="selectedCountry()"
+      (onSelectedCountry)="onSelectedCountry($event)"
+      (onSelectedStations)="onSelectedStations($event)"
+    ></app-world-map>
+  </div>
+</p-dialog>

@@ -1,0 +1,10 @@
+<ng-container *ngIf="!selectedStation">
+  <p>homepage works!</p>
+</ng-container>
+
+<ng-container *ngIf="selectedStation">
+  <audio-visualizer
+    [selectedStation]="selectedStation"
+    [palette]="selectedPalette"
+  ></audio-visualizer>
+</ng-container>

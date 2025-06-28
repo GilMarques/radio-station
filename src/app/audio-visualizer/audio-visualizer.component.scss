@@ -1,0 +1,51 @@
+audio {
+  display: inline-block;
+  height: 40px;
+  width: calc(100% - 650px);
+}
+
+::ng-deep canvas {
+  display: block;
+  width: 100%;
+  max-width: none !important;
+}
+
+#container {
+  margin: 0 0 0 -24px;
+  width: calc(100% + 48px);
+  height: 100%;
+  max-height: calc(100vh);
+}
+
+#audio {
+  position: absolute;
+  visibility: hidden;
+}
+
+.audio-visualizer {
+  box-shadow: 0 3px 4px #0000001a, 0 24px 36px #0000000a;
+}
+
+#playButton {
+  min-height: 80px;
+  min-width: 80px;
+  width: 80px;
+  height: 80px;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  border-radius: 50%;
+  color: white;
+
+  transition: background-color 500ms linear;
+}
+
+::ng-deep .p-popover:after {
+  display: none !important;
+}
+
+::ng-deep .p-popover:before {
+  display: none !important;
+}

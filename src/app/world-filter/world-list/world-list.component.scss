@@ -1,0 +1,18 @@
+.world-list-container {
+  width: 200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+}
+
+.list-section {
+  flex: 1;
+  overflow-y: auto;
+}

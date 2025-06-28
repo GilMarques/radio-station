@@ -1,0 +1,41 @@
+:ng-deep {
+  .p-button {
+    justify-content: start;
+  }
+}
+
+.stations-list {
+  height: calc(100vh - 200px);
+}
+
+.station-item {
+  font-size: 24px;
+
+  width: 300px !important;
+
+  min-height: 150px !important;
+  border-radius: 8px;
+
+  background-color: var(--p-surface-200);
+  padding: 18px;
+
+  text-overflow: ellipsis;
+  &:hover {
+    background-color: var(--p-surface-300);
+  }
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  gap: 8px;
+
+  img {
+    width: 80px;
+    border-radius: 8px;
+  }
+
+  i {
+    width: 80px;
+  }
+}

@@ -1,0 +1,58 @@
+<div class="world-map w-full h-full">
+  <div class="map-container w-full h-full" #mapContainer>
+    <svg #worldMap id="my_dataviz" class="w-full h-full"></svg>
+
+    <div class="country-container relative" *ngIf="selectedCountry()">
+      <div
+        class="country-code absolute bottom-0 right-0 bg-surface-100 rounded-md p-2 shadow-md"
+      >
+        <div class="flex justify-center items-center relative">
+          <div>
+            <img
+              [src]="
+                'https://flagcdn.com/w40/' +
+                selectedCountry()!.iso_3166_1.toLowerCase() +
+                '.png'
+              "
+              alt="{{ selectedCountry()!.iso_3166_1 }}"
+              class="rounded-md"
+              [style.visibility]="(loading$ | async) ? 'hidden' : 'visible'"
+            />
+            <div
+              class="country-name"
+              [style.visibility]="(loading$ | async) ? 'hidden' : 'visible'"
+            >
+              {{ selectedCountry()?.name }}
+            </div>
+            <div
+              class="country-code-text"
+              [style.visibility]="(loading$ | async) ? 'hidden' : 'visible'"
+            >
+              Total Stations: {{ selectedCountry()!.stationcount }}
+            </div>
+
+            <div
+              class="country-code-text"
+              [style.visibility]="(loading$ | async) ? 'hidden' : 'visible'"
+            >
+              Playable Stations: {{ countryStationsCount$ | async }}
+            </div>
+
+            <p-button
+              label="Select"
+              icon="fas fa-check"
+              (onClick)="selectStations()"
+              [styleClass]="'w-full'"
+              [style.visibility]="(loading$ | async) ? 'hidden' : 'visible'"
+            ></p-button>
+
+            <app-loader
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              *ngIf="loading$ | async"
+            ></app-loader>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

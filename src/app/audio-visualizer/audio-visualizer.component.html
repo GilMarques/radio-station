@@ -1,0 +1,216 @@
+<div
+  class="rounded-3xl m-6 p-6 audio-visualizer"
+  [style]="{
+    backgroundColor: palette()?.LightVibrant?.hex + '50',
+    transition: 'background-color 0.5s linear'
+  }"
+>
+  <div class="flex items-start justify-between">
+    <div class="flex items-center self-start gap-5">
+      <div class="min-w-32 flex justify-center">
+        <img
+          id="thumbnailImage"
+          *ngIf="selectedStation().favicon"
+          [src]="selectedStation().favicon"
+          alt="{{ selectedStation().name }}"
+          class="w-32 rounded-xl"
+          title="{{ selectedStation().name }}"
+          onerror="this.style.display='none'"
+        />
+
+        <i class="fa-solid text-6xl fa-radio" *ngIf="!palette()"></i>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="text-4xl flex gap-4">
+          {{ selectedStation().name }}
+
+          <div (click)="toggleFavorite()">
+            <i
+              class="fa-regular fa-fw fa-circle-check"
+              *ngIf="!isFavorite()"
+            ></i>
+            <i
+              class="fa-solid fa-fw fa-circle-check"
+              *ngIf="isFavorite()"
+              [style]="{ color: palette()?.Vibrant?.hex }"
+            ></i>
+          </div>
+        </div>
+
+        <div *ngIf="selectedStation().tags" class="flex flex-wrap gap-2">
+          <ng-container *ngFor="let item of selectedStation()!.tags.split(',')">
+            <span
+              class="py-2 px-4 rounded-full"
+              [style]="{
+                backgroundColor: palette()?.DarkMuted?.hex,
+                color: palette()?.DarkMuted?.bodyTextColor
+              }"
+            >
+              {{ item.charAt(0).toUpperCase() + item.slice(1) }}
+            </span>
+          </ng-container>
+        </div>
+
+        <div
+          class="flex items-center gap-2"
+          *ngIf="selectedStation().countrycode && selectedStation()!.country"
+        >
+          <img
+            [src]="
+              'https://flagcdn.com/w40/' +
+              selectedStation().countrycode.toLowerCase() +
+              '.png'
+            "
+            alt="{{ selectedStation().countrycode }}"
+            class="rounded-md"
+          />
+          {{ selectedStation().country }}
+          <span *ngIf="selectedStation().state">
+            -
+            {{ selectedStation().state }}</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-end gap-2">
+      <p-button
+        *ngIf="selectedStation().homepage"
+        label="Visit Website"
+        icon="fas fa-globe"
+        rounded
+        [style]="{
+          backgroundColor: palette()?.Vibrant?.hex,
+          color: palette()?.Vibrant?.bodyTextColor,
+          borderColor: palette()?.Vibrant?.hex
+        }"
+        (click)="visitHomepage(selectedStation())"
+      >
+      </p-button>
+
+      <p-button
+        label="Share"
+        icon="fas fa-share-from-square"
+        rounded
+        [style]="{
+          backgroundColor: palette()?.Vibrant?.hex,
+          color: palette()?.Vibrant?.bodyTextColor,
+          borderColor: palette()?.Vibrant?.hex
+        }"
+        (click)="onShare(selectedStation())"
+      >
+      </p-button>
+    </div>
+  </div>
+  <!-- 
+  Debug palette
+
+  <div *ngIf="palette()">
+    <div class="flex gap-2 mt-4">
+      <ng-container *ngFor="let key of palette() | keyvalue">
+        <div
+          class="w-8 h-8 rounded"
+          [style.background]="'rgb(' + key.value?.rgb!.join(',') + ')'"
+          [pTooltip]="key.key + ': ' + key.value"
+          tooltipPosition="top"
+        ></div>
+      </ng-container>
+    </div>
+  </div> -->
+
+  <div id="container" class="w-full flex justify-center"></div>
+
+  <audio
+    id="audio"
+    controls
+    crossorigin
+    [src]="selectedStation().url_resolved"
+  ></audio>
+
+  <div class="flex items-center justify-center gap-4 mt-4">
+    <div
+      id="shuffleButton"
+      [style]="{
+        color: palette()?.DarkVibrant?.hex,
+        transition: 'color 0.5s linear'
+      }"
+      (click)="onBack()"
+      pTooltip="Random Station"
+      tooltipPosition="top"
+    >
+      <i class="fa-solid fa-dice"></i>
+    </div>
+
+    <div
+      id="backButton"
+      [style]="{
+        color: palette()?.DarkMuted?.hex,
+        transition: 'color 0.5s linear'
+      }"
+      pTooltip="Previous"
+      tooltipPosition="top"
+      (click)="onBack()"
+    >
+      <i class="fa-solid fa-backward-step"></i>
+    </div>
+
+    <div
+      id="playButton"
+      (click)="togglePlay()"
+      [pTooltip]="!isPlaying() ? 'Play' : 'Pause'"
+      tooltipPosition="top"
+      [style]="{ backgroundColor: palette()?.Vibrant?.hex }"
+    >
+      <i *ngIf="!isPlaying()" class="fas fa-play"></i>
+      <i *ngIf="isPlaying()" class="fas fa-pause"></i>
+    </div>
+
+    <div
+      [style]="{
+        color: palette()?.DarkMuted?.hex,
+        transition: 'color 0.5s linear'
+      }"
+      id="forwardButton"
+      pTooltip="Next"
+      tooltipPosition="top"
+      (click)="onForward()"
+    >
+      <i class="fa-solid fa-forward-step"></i>
+    </div>
+
+    <ng-container #volumeSlider>
+      <div
+        [style]="{
+          color: palette()?.DarkMuted?.hex,
+          transition: 'color 0.5s linear'
+        }"
+      >
+        <i
+          class="fa-solid fa-fw fa-volume-xmark"
+          pTooltip="Unmute"
+          tooltipPosition="top"
+          *ngIf="volumeState == 0"
+        ></i>
+        <i
+          class="fa-solid fa-fw fa-volume-low"
+          pTooltip="Mute"
+          tooltipPosition="top"
+          *ngIf="volumeState == 1"
+        ></i>
+        <i
+          class="fa-solid fa-fw fa-volume-high"
+          pTooltip="Mute"
+          tooltipPosition="top"
+          *ngIf="volumeState == 2"
+        ></i>
+      </div>
+      <custom-slider
+        [volume]="volume()"
+        [primaryColor]="palette()?.Vibrant?.hex"
+        [trackColor]="palette()?.Muted?.hex + '20'"
+        (onVolumeChange)="onVolumeChange($event)"
+      ></custom-slider>
+    </ng-container>
+  </div>
+</div>

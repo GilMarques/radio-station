@@ -1,0 +1,18 @@
+::ng-deep {
+  .country:hover {
+    fill: #5f2fff !important;
+    stroke: #5f2fff !important;
+  }
+  .country.hovered {
+    fill: #5f2fff !important;
+    stroke: #5f2fff !important;
+  }
+  .country.selected {
+    fill: #86ff2f !important;
+    stroke: #86ff2f !important;
+  }
+
+  .station-group {
+    pointer-events: none !important;
+  }
+}

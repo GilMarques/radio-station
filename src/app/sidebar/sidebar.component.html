@@ -1,0 +1,85 @@
+<div class="p-5 bg-surface-50">
+  <div class="flex items-center justify-between mb-2">
+    <span class="font-bold whitespace-nowrap">Stations</span>
+
+    <div class="flex items-center gap-2">
+      <p-button (click)="onGlobeClick()">
+        <i class="fas fa-globe"></i>
+      </p-button>
+
+      <p-button (click)="menu.show($event)">
+        <i class="fas fa-filter"></i>
+      </p-button>
+      <p-menu #menu [model]="filters" [popup]="true">
+        <ng-template #submenuheader>
+          <div class="flex justify-between items-end">
+            <span class="font-bold">Sort By</span>
+            <span
+              class="font-light cursor-pointer"
+              (click)="clearFilters()"
+              *ngIf="isSorting"
+            >
+              Clear
+            </span>
+          </div>
+        </ng-template>
+        <ng-template #item let-item>
+          <a
+            pRipple
+            class="flex items-center p-menu-item-link"
+            (click)="onFilterChange($event, item.index, item.sort)"
+          >
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+
+            <span *ngIf="item.sort" class="ml-auto text-xs p-1">
+              <i class="fa-solid fa-arrow-up" *ngIf="item.sort == 'asc'"></i>
+              <i class="fa-solid fa-arrow-down" *ngIf="item.sort == 'desc'"></i>
+            </span>
+          </a>
+        </ng-template>
+      </p-menu>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <p-inputgroup>
+      <p-inputgroup-addon>
+        <i class="fas fa-magnifying-glass"></i>
+      </p-inputgroup-addon>
+      <input
+        type="search"
+        pInputText
+        [(ngModel)]="searchTerm"
+        class="w-full"
+        (ngModelChange)="onSearch($event)"
+      />
+    </p-inputgroup>
+  </div>
+
+  <div class="flex flex-col gap-2 overflow-y-auto stations-list">
+    @for (station of filteredStations$ | async; let i = $index; track $index ) {
+
+    <button (click)="selectStation(station)" class="station-item">
+      <img
+        *ngIf="getThumbnailUrl(station)"
+        [src]="getThumbnailUrl(station)"
+        alt="{{ station.name }}"
+        title="{{ station.name }}"
+        onerror="this.style.display='none'"
+      />
+
+      <i
+        class="fa-solid fa-xl fa-radio"
+        *ngIf="
+          sidebarService.paletteMap.get(station.stationuuid) === null ||
+          !getThumbnailUrl(station)
+        "
+      ></i>
+
+      <span class="font-bold text-left">{{ station.name }}</span>
+    </button>
+
+    }
+  </div>
+</div>

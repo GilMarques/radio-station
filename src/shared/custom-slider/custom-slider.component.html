@@ -1,0 +1,11 @@
+<div
+  class="slider-wrapper"
+  [ngStyle]="{ '--range-color': primaryColor(), '--track-color': trackColor() }"
+>
+  <p-slider
+    #slider
+    [(ngModel)]="volume"
+    styleClass="w-56"
+    (ngModelChange)="onVolumeChange.emit($event)"
+  />
+</div>

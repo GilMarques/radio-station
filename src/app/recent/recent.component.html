@@ -1,0 +1,12 @@
+<p-dialog
+  [(visible)]="recentVisible"
+  [modal]="true"
+  [style]="{ width: '60vw', height: '60vh' }"
+  [dismissableMask]="true"
+>
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <span class="font-bold whitespace-nowrap">Recent</span>
+    </div>
+  </ng-template>
+</p-dialog>
