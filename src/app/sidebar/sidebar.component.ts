@@ -12,6 +12,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
 import { SidebarService } from '../../services/sidebar.service';
+import { EllipsisPipe } from '../../shared/ellipsis.pipe';
 @Component({
   selector: 'app-sidebar',
   imports: [
@@ -22,6 +23,7 @@ import { SidebarService } from '../../services/sidebar.service';
     MenuModule,
     InputGroupModule,
     InputGroupAddonModule,
+    EllipsisPipe,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',

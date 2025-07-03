@@ -15,10 +15,14 @@
           alt="{{ selectedStation().name }}"
           class="w-32 rounded-xl"
           title="{{ selectedStation().name }}"
-          onerror="this.style.display='none'"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
         />
 
-        <i class="fa-solid text-6xl fa-radio" *ngIf="!palette()"></i>
+        <i
+          #fallbackIcon
+          class="fa-solid text-6xl fa-radio"
+          style="display: none"
+        ></i>
       </div>
 
       <div class="flex flex-col gap-2">
@@ -28,11 +32,11 @@
           <div (click)="toggleFavorite()">
             <i
               class="fa-regular fa-fw fa-circle-check"
-              *ngIf="!isFavorite()"
+              *ngIf="!isFavorite(selectedStation().stationuuid)"
             ></i>
             <i
               class="fa-solid fa-fw fa-circle-check"
-              *ngIf="isFavorite()"
+              *ngIf="isFavorite(selectedStation().stationuuid)"
               [style]="{ color: palette()?.Vibrant?.hex }"
             ></i>
           </div>
@@ -80,10 +84,10 @@
         label="Visit Website"
         icon="fas fa-globe"
         rounded
-        [style]="{
-          backgroundColor: palette()?.Vibrant?.hex,
-          color: palette()?.Vibrant?.bodyTextColor,
-          borderColor: palette()?.Vibrant?.hex
+        [ngStyle]="{
+          '--p-button-primary-background': palette()?.Vibrant?.hex,
+          '--p-button-primary-color': palette()?.Vibrant?.bodyTextColor,
+          '--p-button-primary-border-color': palette()?.Vibrant?.hex
         }"
         (click)="visitHomepage(selectedStation())"
       >
@@ -93,10 +97,10 @@
         label="Share"
         icon="fas fa-share-from-square"
         rounded
-        [style]="{
-          backgroundColor: palette()?.Vibrant?.hex,
-          color: palette()?.Vibrant?.bodyTextColor,
-          borderColor: palette()?.Vibrant?.hex
+        [ngStyle]="{
+          '--p-button-primary-background': palette()?.Vibrant?.hex,
+          '--p-button-primary-color': palette()?.Vibrant?.bodyTextColor,
+          '--p-button-primary-border-color': palette()?.Vibrant?.hex
         }"
         (click)="onShare(selectedStation())"
       >

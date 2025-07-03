@@ -1,4 +1,4 @@
-<div class="p-5 bg-surface-50">
+<div class="bg-surface-50 py-7 px-4">
   <div class="flex items-center justify-between mb-2">
     <span class="font-bold whitespace-nowrap">Stations</span>
 
@@ -66,18 +66,18 @@
         [src]="getThumbnailUrl(station)"
         alt="{{ station.name }}"
         title="{{ station.name }}"
-        onerror="this.style.display='none'"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
       />
 
       <i
+        #fallbackIcon
         class="fa-solid fa-xl fa-radio"
-        *ngIf="
-          sidebarService.paletteMap.get(station.stationuuid) === null ||
-          !getThumbnailUrl(station)
-        "
+        style="display: none"
       ></i>
 
-      <span class="font-bold text-left">{{ station.name }}</span>
+      <span class="font-bold text-left">{{
+        station.name | ellipsis : 30
+      }}</span>
     </button>
 
     }

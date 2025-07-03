@@ -60,12 +60,6 @@ export class RadioBrowserApiService {
       );
   }
 
-  getFavicon(domain: string, size: number = 32): Observable<any> {
-    return this.http.get(
-      `https://www.google.com/s2/favicons?domain=${domain}&sz=${size}`
-    );
-  }
-
   private baseUrlsSubject = new BehaviorSubject<RadioBrowserBase[] | null>(
     null
   );

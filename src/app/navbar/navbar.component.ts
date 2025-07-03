@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { PopoverModule } from 'primeng/popover';
 
@@ -15,6 +15,9 @@ export class NavbarComponent {
     element!.classList.toggle('p-dark');
     this.isDarkMode.update((prev) => !prev);
   }
+
+  @Output() showRecent = new EventEmitter<void>();
+  @Output() showFavorites = new EventEmitter<void>();
 
   items = [
     {

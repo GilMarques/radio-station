@@ -12,6 +12,7 @@ import {
 import { RadioBrowserStation } from './radio-browser/radio-browser-api.model';
 
 import { RadioBrowserApiService } from './radio-browser/radio-browser-api.service';
+import { StorageService } from './storage.service';
 import { Palette } from './vibrant.model';
 
 type SortOption =
@@ -135,6 +136,13 @@ export class SidebarService {
   } | null>(null);
   selectedStation$ = this.selectedStationSubject.asObservable();
 
+  storageService = inject(StorageService);
+
+  getThumbnailUrl(station: RadioBrowserStation): string {
+    return station.favicon
+      ? station.favicon
+      : station.homepage + '/favicon.ico';
+  }
   setSelectedStation(station: RadioBrowserStation) {
     if (this.paletteMap.has(station.stationuuid)) {
       this.selectedStationSubject.next({
@@ -142,7 +150,7 @@ export class SidebarService {
         palette: this.paletteMap.get(station.stationuuid)!,
       });
     } else {
-      Vibrant.from('https://cors-anywhere.herokuapp.com/' + station.favicon)
+      Vibrant.from(this.getThumbnailUrl(station))
         .getPalette()
         .then((palette) => {
           this.paletteMap.set(station.stationuuid, palette);
@@ -159,6 +167,7 @@ export class SidebarService {
           });
         });
     }
+    this.storageService.addRecent(station);
   }
 
   constructor() {}

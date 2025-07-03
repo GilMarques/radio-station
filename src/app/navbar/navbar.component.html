@@ -1,6 +1,16 @@
 <nav class="bg-surface-50 gap-2 h-[60px] flex items-center justify-end p-6">
-  <p-button icon="fa fa-heart" label="Favorites" text />
-  <p-button icon="fa fa-clock-rotate-left" label="Recent" text />
+  <p-button
+    icon="fa fa-heart"
+    label="Favorites"
+    text
+    (click)="showFavorites.emit()"
+  />
+  <p-button
+    icon="fa fa-clock-rotate-left"
+    label="Recent"
+    text
+    (click)="showRecent.emit()"
+  />
 
   <!-- <p-button (click)="op.toggle($event)" icon="fa fa-ellipsis-v" />
   <p-popover #op>

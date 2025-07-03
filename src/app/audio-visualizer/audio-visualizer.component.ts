@@ -20,10 +20,9 @@ import { CustomSliderComponent } from '../../shared/custom-slider/custom-slider.
 
 import { ChipModule } from 'primeng/chip';
 import { PopoverModule } from 'primeng/popover';
-import { CacheService } from '../../services/cache.service';
 import { RadioBrowserStation } from '../../services/radio-browser/radio-browser-api.model';
 import { SidebarService } from '../../services/sidebar.service';
-import { FavoritesService } from '../favorites/favorites.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'audio-visualizer',
@@ -51,10 +50,13 @@ export class AudioVisualizerComponent {
   @ViewChild('thumbnail') thumbnailImage!: HTMLImageElement;
 
   sidebarService = inject(SidebarService);
+  storageService = inject(StorageService);
 
-  isFavorite = signal(false);
+  isFavorite(stationuuid: string) {
+    return this.storageService.isFavorite(stationuuid);
+  }
 
-  constructor(private favoritesService: FavoritesService) {
+  constructor() {
     effect(() => {
       const imageHasError = !!!this.palette();
 
@@ -77,14 +79,7 @@ export class AudioVisualizerComponent {
   }
 
   toggleFavorite() {
-    this.isFavorite.update((isFavorite) => {
-      if (isFavorite) {
-        this.favoritesService.removeFavorite(this.selectedStation()!);
-      } else {
-        this.favoritesService.addFavorite(this.selectedStation()!);
-      }
-      return !isFavorite;
-    });
+    this.storageService.toggleFavorite(this.selectedStation()!);
   }
 
   ngAfterViewInit() {
@@ -129,7 +124,7 @@ export class AudioVisualizerComponent {
     if (!this.containerElement) return;
     const ro = new ResizeObserver(() => {
       const width = window.innerWidth;
-      const height = window.innerHeight - 300;
+      const height = window.innerHeight - 400;
 
       this.audioMotion!.setCanvasSize(width, height);
     });
@@ -183,8 +178,7 @@ export class AudioVisualizerComponent {
     return false;
   });
 
-  cacheService = inject(CacheService);
-  volume = signal<number>(this.cacheService.get('volume') ?? 100);
+  volume = signal<number>(this.storageService.get('volume') ?? 100);
 
   get volumeState() {
     if (this.volume() == 0) {
@@ -198,7 +192,7 @@ export class AudioVisualizerComponent {
   }
 
   onVolumeChange(value: number) {
-    this.cacheService.set('volume', value);
+    this.storageService.set('volume', value);
     if (this.audioElement) this.audioElement.volume = Math.pow(value / 100, 2);
   }
 
@@ -208,7 +202,9 @@ export class AudioVisualizerComponent {
     }
     if (this.audioElement.paused) {
       this.isPlaying.set(true);
-      this.audioElement.play();
+      this.audioElement.play().catch((error) => {
+        alert('Error playing audio');
+      });
     } else {
       this.isPlaying.set(false);
       this.audioElement.pause();
@@ -244,6 +240,10 @@ export class AudioVisualizerComponent {
         (err) => {}
       );
     }
+  }
+
+  onAudioError(event: Event) {
+    console.error(event);
   }
 
   @HostListener('window:keydown', ['$event'])

@@ -3,10 +3,43 @@
   [modal]="true"
   [style]="{ width: '60vw', height: '60vh' }"
   [dismissableMask]="true"
+  [draggable]="false"
+  (onHide)="close.emit()"
 >
   <ng-template #header>
     <div class="inline-flex items-center justify-center gap-2">
       <span class="font-bold whitespace-nowrap">Recent</span>
     </div>
   </ng-template>
+
+  <div class="radio-grid">
+    <div
+      class="radio-tile"
+      *ngFor="let station of recentFilled()"
+      (click)="selectStation(station)"
+    >
+      <div
+        class="flex items-center justify-center"
+        *ngIf="station"
+        title="{{ station.name }}"
+      >
+        <img
+          [src]="station.favicon"
+          alt="Recent"
+          *ngIf="station.favicon"
+          onerror="this.style.display = 'none'; this.nextElementSibling.style.display = 'block'"
+        />
+        <div style="display: none" class="text-center">
+          <div class="h-full w-full">
+            <i class="fa-solid fa-radio"></i>
+          </div>
+          <span class="station-title">{{ station.name }}</span>
+        </div>
+      </div>
+      <div
+        *ngIf="!station"
+        class="w-full h-full bg-surface-200 rounded-[10px]"
+      ></div>
+    </div>
+  </div>
 </p-dialog>

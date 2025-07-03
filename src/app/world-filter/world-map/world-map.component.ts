@@ -92,7 +92,7 @@ export class WorldMapComponent {
           const svgNode = this.svg.node() as SVGSVGElement;
           if (!svgNode) return;
           const { width, height } = svgNode.getBoundingClientRect();
-          const scale = 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height);
+          const scale = 0.7 / Math.max((x1 - x0) / width, (y1 - y0) / height);
           const translate = [
             width / 2 - (scale * (x0 + x1)) / 2,
             height / 2 - (scale * (y0 + y1)) / 2,
@@ -110,7 +110,7 @@ export class WorldMapComponent {
           this.svg
             .transition()
             .duration(750)
-            .call(this.zoom.transform, d3.zoomIdentity);
+            .call(this.zoom.transform, d3.zoomIdentity.scale(1.2));
         }
       }
     });
@@ -170,7 +170,7 @@ export class WorldMapComponent {
           const svgNode = svg.node() as SVGSVGElement;
           if (!svgNode) return;
           const { width, height } = svgNode.getBoundingClientRect();
-          const scale = 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height);
+          const scale = 0.7 / Math.max((x1 - x0) / width, (y1 - y0) / height);
           const translate = [
             width / 2 - (scale * (x0 + x1)) / 2,
             height / 2 - (scale * (y0 + y1)) / 2,

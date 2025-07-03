@@ -1,0 +1,37 @@
+.radio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  justify-content: center;
+}
+
+.radio-tile {
+  position: relative;
+
+  aspect-ratio: 1 / 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--p-inputtext-border-color);
+}
+
+/* Optional: image & fallback styling */
+.radio-tile div img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.station-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // limit to 2 lines
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem; // consider using clamp() for responsive size
+  text-align: center;
+}

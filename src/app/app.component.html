@@ -5,7 +5,10 @@
     </aside>
 
     <div class="main-column">
-      <app-navbar></app-navbar>
+      <app-navbar
+        (showRecent)="recentVisible = true"
+        (showFavorites)="favoritesVisible = true"
+      ></app-navbar>
 
       <main class="main-content">
         <router-outlet></router-outlet>
@@ -17,6 +20,16 @@
     [worldMapVisible]="worldMapVisible"
     (close)="worldMapVisible = false"
   ></app-world-filter>
+
+  <app-recent
+    [recentVisible]="recentVisible"
+    (close)="recentVisible = false"
+  ></app-recent>
+
+  <app-favorites
+    [favoritesVisible]="favoritesVisible"
+    (close)="favoritesVisible = false"
+  ></app-favorites>
 
   <app-footer></app-footer>
 </div>
