@@ -49,7 +49,6 @@ export class AppComponent {
     this.breakpointSub = this.breakpointObserver
       .observe([Breakpoints.Medium, Breakpoints.Large, Breakpoints.XLarge])
       .subscribe((result) => {
-        console.log(result);
         if (result.matches && this.drawerVisible) {
           this.drawerVisible = false;
         }

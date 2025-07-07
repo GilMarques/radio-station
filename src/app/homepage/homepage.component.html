@@ -1,11 +1,13 @@
 <ng-container *ngIf="!(loading$ | async)">
   <ng-container *ngIf="!(selectedStation$ | async)">
     <div
-      class="rounded-3xl bg-surface-200 m-6 p-6 m-6 h-[calc(100%-130px)]"
+      class="rounded-3xl bg-surface-200 m-6 p-6 m-6 h-[calc(100%-130px)] animate-fadein animate-duration-500"
       style="box-shadow: 0 3px 4px #0000001a, 0 24px 36px #0000000a"
     >
       <div class="flex flex-col justify-between items-center">
-        <h1 class="text-4xl font-bold">Radio Station</h1>
+        <h1 class="text-4xl font-bold animate-fadeindown animate-duration-700">
+          Radio Station
+        </h1>
 
         <!-- <p-button
           icon="fa fa-arrow-right"

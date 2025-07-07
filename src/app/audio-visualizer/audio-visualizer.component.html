@@ -1,11 +1,11 @@
 <div
-  class="rounded-3xl m-6 p-6 audio-visualizer"
+  class="rounded-3xl m-6 p-6 audio-visualizer animate-fadein animate-duration-500"
   [style]="{
     backgroundColor: backgroundColor,
     transition: 'background-color 0.5s linear'
   }"
 >
-  <div class="md:flex items-start justify-between">
+  <div class="md:flex items-start justify-between gap-4">
     <div class="flex items-center self-start gap-5">
       <div class="min-w-32 flex justify-center">
         <img
@@ -95,8 +95,17 @@
         [ngStyle]="{
           '--p-button-primary-background': palette()?.Vibrant?.hex,
           '--p-button-primary-color': palette()?.Vibrant?.bodyTextColor,
-          '--p-button-primary-border-color': palette()?.Vibrant?.hex
+          '--p-button-primary-border-color': palette()?.Vibrant?.hex,
+          '--p-button-primary-hover-background': palette()?.DarkVibrant?.hex,
+          '--p-button-primary-hover-color':
+            palette()?.DarkVibrant?.bodyTextColor,
+          '--p-button-primary-hover-border-color': palette()?.DarkVibrant?.hex,
+          '--p-button-primary-active-background': palette()?.DarkVibrant?.hex,
+          '--p-button-primary-active-color':
+            palette()?.DarkVibrant?.bodyTextColor,
+          '--p-button-primary-active-border-color': palette()?.DarkVibrant?.hex
         }"
+        [styleClass]="'whitespace-nowrap'"
         (click)="visitHomepage(selectedStation())"
       >
       </p-button>
@@ -108,7 +117,15 @@
         [ngStyle]="{
           '--p-button-primary-background': palette()?.Vibrant?.hex,
           '--p-button-primary-color': palette()?.Vibrant?.bodyTextColor,
-          '--p-button-primary-border-color': palette()?.Vibrant?.hex
+          '--p-button-primary-border-color': palette()?.Vibrant?.hex,
+          '--p-button-primary-hover-background': palette()?.DarkVibrant?.hex,
+          '--p-button-primary-hover-color':
+            palette()?.DarkVibrant?.bodyTextColor,
+          '--p-button-primary-hover-border-color': palette()?.DarkVibrant?.hex,
+          '--p-button-primary-active-background': palette()?.DarkVibrant?.hex,
+          '--p-button-primary-active-color':
+            palette()?.DarkVibrant?.bodyTextColor,
+          '--p-button-primary-active-border-color': palette()?.DarkVibrant?.hex
         }"
         (click)="onShare(selectedStation())"
       >
