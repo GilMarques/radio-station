@@ -4,8 +4,9 @@
 >
   <p-slider
     #slider
-    [(ngModel)]="volume"
+    [(ngModel)]="value"
     styleClass="w-56"
-    (ngModelChange)="onVolumeChange.emit($event)"
+    (ngModelChange)="onChange.emit($event)"
+    (onSlideEnd)="onSlideEnd.emit($event.value)"
   />
 </div>

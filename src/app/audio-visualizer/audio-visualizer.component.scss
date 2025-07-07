@@ -11,13 +11,13 @@ audio {
 }
 
 .button-animate-scale {
-  transition: transform 0.3s ease-in;
+  transform-origin: center;
 }
 .button-animate-scale:hover {
-  transform: scale(1.02);
+  transform: scale(1.05);
 }
 .button-animate-scale:active {
-  transform: scale(0.98);
+  transform: scale(0.95);
 }
 
 #container {

@@ -7,15 +7,16 @@
 .slider-wrapper ::ng-deep .p-slider {
   background-color: var(--track-color) !important;
   transition: background-color 500ms linear;
+  cursor: pointer !important;
 }
 
 .slider-wrapper ::ng-deep .p-slider-handle {
   opacity: 0 !important;
 }
 
-.slider-wrapper ::ng-deep .p-slider-handle:hover {
+.slider-wrapper ::ng-deep .p-slider-handle:hover,
+.slider-wrapper ::ng-deep .p-slider:hover .p-slider-handle {
   opacity: 1 !important;
-  cursor: pointer !important;
 }
 
 ::ng-deep {

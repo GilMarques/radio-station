@@ -254,10 +254,11 @@
         ></i>
       </div>
       <custom-slider
-        [volume]="volume()"
+        [value]="volume()"
         [primaryColor]="palette()?.Vibrant?.hex"
         [trackColor]="trackColor"
-        (onVolumeChange)="onVolumeChange($event)"
+        (onChange)="onVolumeChange($event)"
+        (onSlideEnd)="onVolumeSlideEnd($event)"
       ></custom-slider>
     </ng-container>
   </div>

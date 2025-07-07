@@ -10,10 +10,11 @@ import { SliderModule } from 'primeng/slider';
   styleUrl: './custom-slider.component.scss',
 })
 export class CustomSliderComponent {
-  @Input({ required: true }) volume!: number;
+  @Input({ required: true }) value!: number;
 
   primaryColor = input<string | undefined>('#000000');
   trackColor = input<string | undefined>('#ffffff');
 
-  onVolumeChange = output<number>();
+  onChange = output<number>();
+  onSlideEnd = output<number | undefined>();
 }
