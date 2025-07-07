@@ -11,11 +11,10 @@ import { DialogModule } from 'primeng/dialog';
 import { RadioBrowserStation } from '../../services/radio-browser/radio-browser-api.model';
 import { SidebarService } from '../../services/sidebar.service';
 import { StorageService } from '../../services/storage.service';
-import { EllipsisPipe } from '../../shared/ellipsis.pipe';
 
 @Component({
   selector: 'app-recent',
-  imports: [DialogModule, CommonModule, EllipsisPipe],
+  imports: [DialogModule, CommonModule],
   templateUrl: './recent.component.html',
   styleUrl: './recent.component.scss',
 })

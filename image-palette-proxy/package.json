@@ -1,0 +1,22 @@
+{
+  "name": "image-palette-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "icojs": "^0.19.5",
+    "node-fetch": "^3.3.2",
+    "node-vibrant": "^4.0.3",
+    "nodemon": "^3.1.10",
+    "sharp": "^0.34.2"
+  }
+}

@@ -1,19 +1,22 @@
 import { inject, Injectable } from '@angular/core';
-import { Vibrant } from 'node-vibrant/browser';
 import {
   BehaviorSubject,
   combineLatest,
   debounceTime,
   distinctUntilChanged,
   map,
+  Observable,
   switchMap,
   tap,
 } from 'rxjs';
 import { RadioBrowserStation } from './radio-browser/radio-browser-api.model';
 
+import { HttpClient } from '@angular/common/http';
 import { RadioBrowserApiService } from './radio-browser/radio-browser-api.service';
 import { StorageService } from './storage.service';
 import { Palette } from './vibrant.model';
+
+import { Vibrant } from 'node-vibrant/browser';
 
 type SortOption =
   | 'name-asc'
@@ -144,30 +147,65 @@ export class SidebarService {
       : station.homepage + '/favicon.ico';
   }
   setSelectedStation(station: RadioBrowserStation) {
-    if (this.paletteMap.has(station.stationuuid)) {
-      this.selectedStationSubject.next({
-        station,
-        palette: this.paletteMap.get(station.stationuuid)!,
-      });
-    } else {
-      Vibrant.from(this.getThumbnailUrl(station))
-        .getPalette()
-        .then((palette) => {
-          this.paletteMap.set(station.stationuuid, palette);
-          this.selectedStationSubject.next({
-            station,
-            palette,
-          });
-        })
-        .catch(() => {
-          this.paletteMap.set(station.stationuuid, null);
-          this.selectedStationSubject.next({
-            station,
-            palette: null,
-          });
-        });
-    }
     this.storageService.addRecent(station);
+
+    const cachedPalette = this.paletteMap.get(station.stationuuid);
+    if (cachedPalette !== undefined) {
+      this.updateSelectedStation(station, cachedPalette);
+      return;
+    }
+
+    const imageUrl = this.getThumbnailUrl(station);
+    this.fetchPaletteWithFallback(station, imageUrl);
+  }
+
+  private updateSelectedStation(
+    station: RadioBrowserStation,
+    palette: Palette | null
+  ) {
+    this.selectedStationSubject.next({ station, palette });
+  }
+
+  private fetchPaletteWithFallback(
+    station: RadioBrowserStation,
+    imageUrl: string
+  ) {
+    this.getPalette(imageUrl).subscribe({
+      next: (result) => {
+        this.paletteMap.set(station.stationuuid, result.palette);
+        this.updateSelectedStation(station, result.palette);
+      },
+      error: () => {
+        // Fallback: use Vibrant directly if proxy fails
+        Vibrant.from(imageUrl)
+          .getPalette()
+          .then((palette) => {
+            this.paletteMap.set(station.stationuuid, palette);
+            this.updateSelectedStation(station, palette);
+          })
+          .catch(() => {
+            this.paletteMap.set(station.stationuuid, null);
+            this.updateSelectedStation(station, null);
+          });
+      },
+    });
+  }
+
+  isValidUrl(url: string) {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  http = inject(HttpClient);
+
+  getPalette(imageUrl: string): Observable<{ palette: Palette }> {
+    return this.http.get<{ palette: Palette }>(
+      `http://localhost:3000/palette?url=${imageUrl}`
+    );
   }
 
   constructor() {}

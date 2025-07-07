@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   effect,
+  ElementRef,
   HostListener,
   inject,
   input,
@@ -58,15 +59,7 @@ export class AudioVisualizerComponent {
 
   constructor() {
     effect(() => {
-      const imageHasError = !!!this.palette();
-
-      const thumb = document.getElementById(
-        'thumbnailImage'
-      ) as HTMLImageElement;
-      if (thumb && imageHasError) thumb.style.display = 'none';
-      if (thumb && !imageHasError) thumb.style.display = 'block';
-    });
-    effect(() => {
+      this.resetImageFallback();
       const palette = this.palette();
 
       if (!this.audioMotion) {
@@ -222,6 +215,28 @@ export class AudioVisualizerComponent {
     window.open(station.homepage, '_blank');
   }
 
+  getThumbnailUrl(station: RadioBrowserStation): string {
+    return station.favicon
+      ? station.favicon
+      : station.homepage + '/favicon.ico';
+  }
+
+  get backgroundColor() {
+    const palette = this.palette();
+    if (palette?.LightVibrant?.hex) {
+      return palette.LightVibrant.hex + '50';
+    }
+    return 'white';
+  }
+
+  get trackColor() {
+    const palette = this.palette();
+    if (palette?.Muted?.hex) {
+      return palette.Muted.hex + '20';
+    }
+    return 'black';
+  }
+
   onShare(station: RadioBrowserStation) {
     const shareData = {
       title: station.name,
@@ -244,6 +259,27 @@ export class AudioVisualizerComponent {
 
   onAudioError(event: Event) {
     console.error(event);
+  }
+
+  @ViewChild('stationImg') stationImg!: ElementRef<HTMLImageElement>;
+  @ViewChild('fallbackIcon') fallbackIcon!: ElementRef<HTMLElement>;
+
+  resetImageFallback() {
+    if (this.stationImg) {
+      this.stationImg.nativeElement.style.display = 'inline';
+    }
+    if (this.fallbackIcon) {
+      this.fallbackIcon.nativeElement.style.display = 'none';
+    }
+  }
+
+  onImageError(event: Event) {
+    if (this.stationImg) {
+      this.stationImg.nativeElement.style.display = 'none';
+    }
+    if (this.fallbackIcon) {
+      this.fallbackIcon.nativeElement.style.display = 'inline-block';
+    }
   }
 
   @HostListener('window:keydown', ['$event'])
