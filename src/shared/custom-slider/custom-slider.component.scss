@@ -11,7 +11,11 @@
 
 .slider-wrapper ::ng-deep .p-slider-handle {
   opacity: 0 !important;
-  cursor: default !important;
+}
+
+.slider-wrapper ::ng-deep .p-slider-handle:hover {
+  opacity: 1 !important;
+  cursor: pointer !important;
 }
 
 ::ng-deep {

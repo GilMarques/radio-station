@@ -185,6 +185,7 @@ export class AudioVisualizerComponent {
   }
 
   onVolumeChange(value: number) {
+    this.previousVolume.set(value);
     this.storageService.set('volume', value);
     if (this.audioElement) this.audioElement.volume = Math.pow(value / 100, 2);
   }
@@ -280,6 +281,19 @@ export class AudioVisualizerComponent {
     if (this.fallbackIcon) {
       this.fallbackIcon.nativeElement.style.display = 'inline-block';
     }
+  }
+
+  previousVolume = signal(this.volume());
+  onVolumeMute() {
+    this.volume.update((value) => {
+      if (value == 0) {
+        this.volume.set(this.previousVolume());
+        return this.previousVolume();
+      }
+
+      this.previousVolume.set(value);
+      return 0;
+    });
   }
 
   @HostListener('window:keydown', ['$event'])

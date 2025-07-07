@@ -37,6 +37,7 @@
                 : 'Add to favorites'
             "
             tooltipPosition="top"
+            class="button-animate-scale"
           >
             <i
               class="fa-regular fa-fw fa-circle-check"
@@ -106,6 +107,7 @@
           '--p-button-primary-active-border-color': palette()?.DarkVibrant?.hex
         }"
         [styleClass]="'whitespace-nowrap'"
+        class="button-animate-scale"
         (click)="visitHomepage(selectedStation())"
       >
       </p-button>
@@ -127,6 +129,7 @@
             palette()?.DarkVibrant?.bodyTextColor,
           '--p-button-primary-active-border-color': palette()?.DarkVibrant?.hex
         }"
+        class="button-animate-scale"
         (click)="onShare(selectedStation())"
       >
       </p-button>
@@ -162,11 +165,13 @@
       id="shuffleButton"
       [style]="{
         color: palette()?.DarkVibrant?.hex,
-        transition: 'color 0.5s linear'
+        transition: 'color 0.5s linear',
+        fontSize: '20px'
       }"
       (click)="onBack()"
       pTooltip="Random Station"
       tooltipPosition="top"
+      class="button-animate-scale"
     >
       <i class="fa-solid fa-dice"></i>
     </div>
@@ -175,11 +180,13 @@
       id="backButton"
       [style]="{
         color: palette()?.DarkMuted?.hex,
-        transition: 'color 0.5s linear'
+        transition: 'color 0.5s linear',
+        fontSize: '30px'
       }"
       pTooltip="Previous"
       tooltipPosition="top"
       (click)="onBack()"
+      class="button-animate-scale"
     >
       <i class="fa-solid fa-backward-step"></i>
     </div>
@@ -189,7 +196,15 @@
       (click)="togglePlay()"
       [pTooltip]="!isPlaying() ? 'Play' : 'Pause'"
       tooltipPosition="top"
-      [style]="{ backgroundColor: palette()?.Vibrant?.hex }"
+      [style]="{
+        backgroundColor: palette()?.Vibrant?.hex,
+        color: palette()?.Vibrant?.titleTextColor
+      }"
+      [ngStyle]="{
+        '--hover-background': palette()?.DarkVibrant?.hex,
+       
+      }"
+      class="button-animate-scale"
     >
       <i *ngIf="!isPlaying()" class="fas fa-play"></i>
       <i *ngIf="isPlaying()" class="fas fa-pause"></i>
@@ -198,12 +213,14 @@
     <div
       [style]="{
         color: palette()?.DarkMuted?.hex,
-        transition: 'color 0.5s linear'
+        transition: 'color 0.5s linear',
+        fontSize: '30px'
       }"
       id="forwardButton"
       pTooltip="Next"
       tooltipPosition="top"
       (click)="onForward()"
+      class="button-animate-scale"
     >
       <i class="fa-solid fa-forward-step"></i>
     </div>
@@ -212,8 +229,10 @@
       <div
         [style]="{
           color: palette()?.DarkMuted?.hex,
-          transition: 'color 0.5s linear'
+          transition: 'color 0.5s linear',
+          fontSize: '20px'
         }"
+        (click)="onVolumeMute()"
       >
         <i
           class="fa-solid fa-fw fa-volume-xmark"
