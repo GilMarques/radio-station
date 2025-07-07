@@ -1,16 +1,28 @@
-<nav class="bg-surface-50 gap-2 h-[60px] flex items-center justify-end p-6">
+<nav
+  class="bg-surface-50 h-[60px] flex items-center justify-between lg:justify-end p-6"
+>
   <p-button
-    icon="fa fa-heart"
-    label="Favorites"
+    class="lg:hidden"
+    icon="fa fa-bars"
+    label="Menu"
     text
-    (click)="showFavorites.emit()"
+    (click)="showMenu.emit()"
   />
-  <p-button
-    icon="fa fa-clock-rotate-left"
-    label="Recent"
-    text
-    (click)="showRecent.emit()"
-  />
+
+  <div class="flex gap-2">
+    <p-button
+      icon="fa fa-heart"
+      label="Favorites"
+      text
+      (click)="showFavorites.emit()"
+    />
+    <p-button
+      icon="fa fa-clock-rotate-left"
+      label="Recent"
+      text
+      (click)="showRecent.emit()"
+    />
+  </div>
 
   <!-- <p-button (click)="op.toggle($event)" icon="fa fa-ellipsis-v" />
   <p-popover #op>

@@ -38,16 +38,13 @@ export class SidebarComponent {
 
   @Output() showWorldMap: EventEmitter<void> = new EventEmitter();
 
-  constructor() {}
+  @Output() selectedStation: EventEmitter<void> = new EventEmitter();
 
-  getThumbnailUrl(station: RadioBrowserStation): string {
-    return station.favicon
-      ? station.favicon
-      : station.homepage + '/favicon.ico';
-  }
+  constructor() {}
 
   selectStation(station: RadioBrowserStation) {
     this.sidebarService.setSelectedStation(station);
+    this.selectedStation.emit();
   }
 
   onSearch(newValue: string) {

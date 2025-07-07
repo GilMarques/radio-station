@@ -1,13 +1,21 @@
+<ng-template #sidebarTemplate>
+  <app-sidebar
+    (showWorldMap)="showWorldMapDialog()"
+    (selectedStation)="drawerVisible = false"
+  ></app-sidebar>
+</ng-template>
+
 <div class="app-layout">
   <div class="main-row">
-    <aside class="sidebar">
-      <app-sidebar (showWorldMap)="showWorldMapDialog()"></app-sidebar>
+    <aside class="sidebar" *ngIf="!drawerVisible">
+      <ng-container *ngTemplateOutlet="sidebarTemplate"></ng-container>
     </aside>
 
     <div class="main-column">
       <app-navbar
         (showRecent)="recentVisible = true"
         (showFavorites)="favoritesVisible = true"
+        (showMenu)="drawerVisible = true"
       ></app-navbar>
 
       <main class="main-content">
@@ -15,6 +23,12 @@
       </main>
     </div>
   </div>
+
+  <p-drawer [(visible)]="drawerVisible" header="Drawer">
+    <ng-template #headless>
+      <ng-container *ngTemplateOutlet="sidebarTemplate"></ng-container>
+    </ng-template>
+  </p-drawer>
 
   <app-world-filter
     [worldMapVisible]="worldMapVisible"

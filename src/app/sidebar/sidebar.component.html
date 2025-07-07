@@ -62,8 +62,8 @@
 
     <button (click)="selectStation(station)" class="station-item">
       <img
-        *ngIf="getThumbnailUrl(station)"
-        [src]="getThumbnailUrl(station)"
+        *ngIf="sidebarService.getThumbnailUrl(station)"
+        [src]="sidebarService.getThumbnailUrl(station)"
         alt="{{ station.name }}"
         title="{{ station.name }}"
         loading="lazy"

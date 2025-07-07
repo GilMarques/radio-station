@@ -117,7 +117,7 @@ export class AudioVisualizerComponent {
     if (!this.containerElement) return;
     const ro = new ResizeObserver(() => {
       const width = window.innerWidth;
-      const height = window.innerHeight - 400;
+      const height = window.innerHeight - 450;
 
       this.audioMotion!.setCanvasSize(width, height);
     });
