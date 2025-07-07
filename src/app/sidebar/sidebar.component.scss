@@ -8,6 +8,10 @@
   height: calc(100vh - 200px);
 }
 
+::ng-deep .p-drawer .stations-list {
+  height: calc(100vh - 128px) !important;
+}
+
 .station-item {
   font-size: 24px;
 

@@ -29,7 +29,15 @@
         <div class="text-4xl flex gap-4">
           {{ selectedStation().name }}
 
-          <div (click)="toggleFavorite()">
+          <div
+            (click)="toggleFavorite()"
+            [pTooltip]="
+              isFavorite(selectedStation().stationuuid)
+                ? 'Remove from favorites'
+                : 'Add to favorites'
+            "
+            tooltipPosition="top"
+          >
             <i
               class="fa-regular fa-fw fa-circle-check"
               *ngIf="!isFavorite(selectedStation().stationuuid)"
