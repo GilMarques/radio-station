@@ -57,7 +57,9 @@
     </p-inputgroup>
   </div>
 
-  <div class="flex flex-col gap-2 overflow-y-auto stations-list">
+  <div
+    class="flex flex-col gap-2 overflow-x-hidden overflow-y-auto stations-list"
+  >
     @for (station of filteredStations$ | async; let i = $index; track $index ) {
 
     <button (click)="selectStation(station)" class="station-item">

@@ -285,7 +285,7 @@ export class AudioVisualizerComponent {
   }
 
   previousVolume = signal(this.volume() == 0 ? 100 : this.volume());
-  onVolumeMute() {
+  onVolumeToggle() {
     this.volume.update((value) => {
       if (value == 0) {
         return this.previousVolume();

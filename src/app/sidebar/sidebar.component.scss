@@ -6,6 +6,7 @@
 
 .stations-list {
   height: calc(100vh - 185px);
+  padding: 10px;
 }
 
 ::ng-deep .p-drawer .stations-list {
@@ -24,6 +25,11 @@
   text-overflow: ellipsis;
   &:hover {
     background-color: var(--p-surface-300);
+    transform: scale(1.01);
+  }
+
+  &:active {
+    transform: scale(0.99);
   }
 
   display: flex;

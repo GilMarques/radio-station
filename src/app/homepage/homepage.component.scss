@@ -1,1 +1,82 @@
- 
+.ripple-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+
+  pointer-events: none;
+}
+
+.ripple-box {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ripple-box span {
+  position: absolute;
+  border-radius: 50%;
+
+  mix-blend-mode: difference;
+  aspect-ratio: 1/1;
+
+  animation: ripple 10s linear infinite;
+}
+
+@keyframes ripple {
+  0% {
+    width: 0;
+
+    opacity: 0.1;
+  }
+
+  100% {
+    width: 140%;
+
+    opacity: 0;
+  }
+}
+
+.ripple-box span:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 9s;
+  background-color: #004b97;
+  top: 100px;
+  left: 100px;
+  transform: translate(-50%, -50%);
+}
+
+.ripple-box span:nth-child(2) {
+  animation-delay: -4s;
+  animation-duration: 4s;
+  background-color: #68a4e0;
+  top: 100px;
+  right: 100px;
+  transform: translate(50%, -50%);
+}
+
+.ripple-box span:nth-child(3) {
+  animation-delay: -6s;
+  animation-duration: 7s;
+  background-color: #208fff;
+  bottom: 100px;
+  left: 100px;
+  transform: translate(-50%, 50%);
+}
+
+.ripple-box span:nth-child(4) {
+  animation-delay: -8s;
+  animation-duration: 5s;
+  background-color: #253a4f;
+  bottom: 100px;
+  right: 100px;
+  transform: translate(50%, 50%);
+}

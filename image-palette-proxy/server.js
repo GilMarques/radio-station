@@ -51,15 +51,14 @@ async function ensureSupportedFormat(buffer, contentType, url) {
 app.get("/palette", async (req, res) => {
   const { url } = req.query;
 
+  console.log("URL", url);
+
   if (!url || url.trim() === "") {
     return res.status(400).json({ error: 'Missing "url" query parameter.' });
   }
 
   try {
     const { buffer, contentType } = await fetchImage(url);
-
-    console.log("Buffer", buffer);
-    console.log("ContentType", contentType);
 
     const processedBuffer = await ensureSupportedFormat(
       buffer,
@@ -84,7 +83,7 @@ app.get("/palette", async (req, res) => {
         mappedPalette[key] = null;
       }
     }
-    console.log("Palette", mappedPalette);
+
     res.json({ palette: mappedPalette });
   } catch (err) {
     console.error(err);

@@ -1,20 +1,29 @@
 <ng-container *ngIf="!(loading$ | async)">
   <ng-container *ngIf="!(selectedStation$ | async)">
     <div
-      class="rounded-3xl bg-surface-200 m-6 p-6 m-6 h-[calc(100%-130px)] animate-fadein animate-duration-500"
+      class="relative rounded-3xl bg-surface-200 m-6 p-6 m-6 h-[calc(100%-130px)] animate-fadein animate-duration-500 flex justify-center items-center overflow-hidden"
       style="box-shadow: 0 3px 4px #0000001a, 0 24px 36px #0000000a"
     >
-      <div class="flex flex-col justify-between items-center">
-        <h1 class="text-4xl font-bold animate-fadeindown animate-duration-700">
+      <div class="ripple-container">
+        <div class="ripple-box">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="relative">
+        <h1
+          class="text-[72px] whitespace-nowrap font-bold animate-fadeindown animate-duration-700"
+        >
           Radio Station
         </h1>
-
-        <!-- <p-button
-          icon="fa fa-arrow-right"
-          label="Pick a country"
-          iconPos="right"
-          rounded="true"
-        /> -->
       </div>
     </div>
   </ng-container>
