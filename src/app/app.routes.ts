@@ -6,4 +6,8 @@ export const routes: Routes = [
     path: '',
     component: HomepageComponent,
   },
+  {
+    path: ':stationuuid',
+    component: HomepageComponent,
+  },
 ];

@@ -241,7 +241,7 @@ export class AudioVisualizerComponent {
     const shareData = {
       title: station.name,
       text: `Listen to ${station.name} on Radio Station App`,
-      url: station.url_resolved,
+      url: window.location.href,
     };
 
     if (navigator.share) {

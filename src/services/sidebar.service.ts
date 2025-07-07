@@ -16,6 +16,8 @@ import { RadioBrowserApiService } from './radio-browser/radio-browser-api.servic
 import { StorageService } from './storage.service';
 import { Palette } from './vibrant.model';
 
+import { Location } from '@angular/common';
+
 import { Vibrant } from 'node-vibrant/browser';
 
 type SortOption =
@@ -139,6 +141,11 @@ export class SidebarService {
   } | null>(null);
   selectedStation$ = this.selectedStationSubject.asObservable();
 
+  loadingSubject = new BehaviorSubject<boolean>(false);
+  loading$ = this.loadingSubject.asObservable();
+
+  location = inject(Location);
+
   storageService = inject(StorageService);
 
   getThumbnailUrl(station: RadioBrowserStation): string {
@@ -146,6 +153,19 @@ export class SidebarService {
       ? station.favicon
       : station.homepage + '/favicon.ico';
   }
+
+  getStationCountryCode(station: RadioBrowserStation): string {
+    if (station.iso_3166_2) {
+      return station.iso_3166_2;
+    }
+
+    if (station.countrycode) {
+      return station.countrycode;
+    }
+
+    return '';
+  }
+
   setSelectedStation(station: RadioBrowserStation) {
     this.storageService.addRecent(station);
 
@@ -164,16 +184,19 @@ export class SidebarService {
     palette: Palette | null
   ) {
     this.selectedStationSubject.next({ station, palette });
+    this.location.go('/' + station.stationuuid);
   }
 
   private fetchPaletteWithFallback(
     station: RadioBrowserStation,
     imageUrl: string
   ) {
+    this.loadingSubject.next(true);
     this.getPalette(imageUrl).subscribe({
       next: (result) => {
         this.paletteMap.set(station.stationuuid, result.palette);
         this.updateSelectedStation(station, result.palette);
+        this.loadingSubject.next(false);
       },
       error: () => {
         // Fallback: use Vibrant directly if proxy fails
@@ -182,10 +205,12 @@ export class SidebarService {
           .then((palette) => {
             this.paletteMap.set(station.stationuuid, palette);
             this.updateSelectedStation(station, palette);
+            this.loadingSubject.next(false);
           })
           .catch(() => {
             this.paletteMap.set(station.stationuuid, null);
             this.updateSelectedStation(station, null);
+            this.loadingSubject.next(false);
           });
       },
     });

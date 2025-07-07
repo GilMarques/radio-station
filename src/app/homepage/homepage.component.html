@@ -1,10 +1,18 @@
-<ng-container *ngIf="!selectedStation">
-  <p>homepage works!</p>
+<ng-container *ngIf="!(loading$ | async)">
+  <ng-container *ngIf="!(selectedStation$ | async)">
+    <p>homepage works!</p>
+  </ng-container>
+
+  <ng-container *ngIf="selectedStation$ | async as selectedStation">
+    <audio-visualizer
+      [selectedStation]="selectedStation.station"
+      [palette]="selectedStation.palette"
+    ></audio-visualizer>
+  </ng-container>
 </ng-container>
 
-<ng-container *ngIf="selectedStation">
-  <audio-visualizer
-    [selectedStation]="selectedStation"
-    [palette]="selectedPalette"
-  ></audio-visualizer>
+<ng-container *ngIf="loading$ | async">
+  <div class="flex justify-center items-center m-6 h-[calc(100%-100px)]">
+    <app-loader style="transform: scale(3)"></app-loader>
+  </div>
 </ng-container>

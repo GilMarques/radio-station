@@ -73,7 +73,7 @@ export class SidebarComponent {
       items: [
         {
           index: 0,
-          label: 'A-Z',
+          label: 'Alphabetical',
           icon: 'fas fa-fw fa-font',
           sort: null,
           key: 'name',
