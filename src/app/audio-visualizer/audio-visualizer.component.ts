@@ -187,7 +187,6 @@ export class AudioVisualizerComponent {
   onVolumeChange(value: number) {
     this.volume.set(value);
 
-    this.storageService.set('volume', value);
     if (this.audioElement) this.audioElement.volume = Math.pow(value / 100, 2);
   }
 
@@ -296,8 +295,9 @@ export class AudioVisualizerComponent {
   }
 
   onVolumeSlideEnd(value: number | undefined) {
+    this.storageService.set('volume', value);
     if (!value || value == 0) return;
-    console.log('here');
+
     this.previousVolume.set(value);
   }
 
