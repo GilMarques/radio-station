@@ -55,29 +55,6 @@ export class SidebarService {
     this.sortOptionSubject.next(`${sortKey}-${sortDirection!}`);
   }
 
-  // private useOverride$ = new BehaviorSubject<boolean>(false);
-  // private overrideStations$ = new BehaviorSubject<RadioBrowserStation[]>([]);
-
-  // setOverrideStations(stations: RadioBrowserStation[]) {
-  //   this.overrideStations$.next(stations);
-  //   this.useOverride$.next(true);
-  // }
-
-  // // To disable override and go back to live data
-  // disableOverride() {
-  //   this.useOverride$.next(false);
-  // }
-
-  // stations$ = combineLatest([this.useOverride$, this.countryCode$]).pipe(
-  //   switchMap(([useOverride, countryCode]) => {
-  //     if (useOverride) {
-  //       return this.overrideStations$;
-  //     } else {
-  //       return this.radioBrowserService.getStationsByCountryCode$(countryCode);
-  //     }
-  //   })
-  // );
-
   private stationsSubject = new BehaviorSubject<RadioBrowserStation[]>([]);
   stations$ = this.stationsSubject.asObservable();
 
@@ -151,6 +128,8 @@ export class SidebarService {
   } | null>(null);
   selectedStation$ = this.selectedStationSubject.asObservable();
 
+  selectedStation?: RadioBrowserStation;
+
   loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
 
@@ -178,6 +157,7 @@ export class SidebarService {
 
   setSelectedStation(station: RadioBrowserStation) {
     this.storageService.addRecent(station);
+    this.selectedStation = station;
 
     const cachedPalette = this.paletteMap.get(station.stationuuid);
     if (cachedPalette !== undefined) {
@@ -246,30 +226,32 @@ export class SidebarService {
   }
 
   onNextStation() {
-    // const currentIndex = this.filteredStationsList.findIndex(
-    //   (station) => station.stationuuid === this.selectedStation()?.stationuuid
-    // );
-    // const nextIndex = (currentIndex + 1) % this.filteredStationsList.length;
-    // this.selectedStation.set(this.filteredStationsList[nextIndex]);
+    const currentIndex = this.filteredStationsList.findIndex(
+      (station) => station.stationuuid === this.selectedStation?.stationuuid
+    );
+    const nextIndex = (currentIndex + 1) % this.filteredStationsList.length;
+
+    this.setSelectedStation(this.filteredStationsList[nextIndex]);
   }
 
   onPreviousStation() {
-    // if (!this.selectedStation || this.filteredStationsList.length === 0) return;
-    // const currentIndex = this.filteredStationsList.findIndex(
-    //   (station) => station.stationuuid === this.selectedStation()?.stationuuid
-    // );
-    // const prevIndex =
-    //   (currentIndex - 1 + this.filteredStationsList.length) %
-    //   this.filteredStationsList.length;
-    // this.selectedStation.set(this.filteredStationsList[prevIndex]);
+    if (!this.selectedStation || this.filteredStationsList.length === 0) return;
+    const currentIndex = this.filteredStationsList.findIndex(
+      (station) => station.stationuuid === this.selectedStation?.stationuuid
+    );
+    const prevIndex =
+      (currentIndex - 1 + this.filteredStationsList.length) %
+      this.filteredStationsList.length;
+    this.setSelectedStation(this.filteredStationsList[prevIndex]);
   }
 
   onRandomStation() {
-    // if (this.filteredStationsList.length === 0) return;
-    // const randomIndex = Math.floor(
-    //   Math.random() * this.filteredStationsList.length
-    // );
-    // this.selectedStation.set(this.filteredStationsList[randomIndex]);
+    if (this.filteredStationsList.length === 0) return;
+    const randomIndex = Math.floor(
+      Math.random() * this.filteredStationsList.length
+    );
+    console.log(this.filteredStationsList);
+    this.setSelectedStation(this.filteredStationsList[randomIndex]);
   }
 
   clearImagePallete(id: string) {
