@@ -110,7 +110,10 @@ export class WorldFilterComponent {
   }
 
   onSelectedStations(stations: RadioBrowserStation[]) {
-    this.sidebarService.setOverrideStations(stations);
+    this.sidebarService.setStations(
+      this.selectedCountry()?.iso_3166_1 || null,
+      stations
+    );
     this.selectedCountry.set(null);
     this.hoveredCountry.set(null);
     this.close.emit();

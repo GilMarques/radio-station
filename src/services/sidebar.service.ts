@@ -6,7 +6,6 @@ import {
   distinctUntilChanged,
   map,
   Observable,
-  switchMap,
   tap,
 } from 'rxjs';
 import { RadioBrowserStation } from './radio-browser/radio-browser-api.model';
@@ -42,7 +41,7 @@ export class SidebarService {
   private sortOptionSubject = new BehaviorSubject<SortOption>('none');
   sortOption$ = this.sortOptionSubject.asObservable();
 
-  private countryCodeSubject = new BehaviorSubject<string>('pt');
+  private countryCodeSubject = new BehaviorSubject<string | null>(null);
   countryCode$ = this.countryCodeSubject.asObservable();
 
   setSortOption(
@@ -56,28 +55,39 @@ export class SidebarService {
     this.sortOptionSubject.next(`${sortKey}-${sortDirection!}`);
   }
 
-  private useOverride$ = new BehaviorSubject<boolean>(false);
-  private overrideStations$ = new BehaviorSubject<RadioBrowserStation[]>([]);
+  // private useOverride$ = new BehaviorSubject<boolean>(false);
+  // private overrideStations$ = new BehaviorSubject<RadioBrowserStation[]>([]);
 
-  setOverrideStations(stations: RadioBrowserStation[]) {
-    this.overrideStations$.next(stations);
-    this.useOverride$.next(true);
+  // setOverrideStations(stations: RadioBrowserStation[]) {
+  //   this.overrideStations$.next(stations);
+  //   this.useOverride$.next(true);
+  // }
+
+  // // To disable override and go back to live data
+  // disableOverride() {
+  //   this.useOverride$.next(false);
+  // }
+
+  // stations$ = combineLatest([this.useOverride$, this.countryCode$]).pipe(
+  //   switchMap(([useOverride, countryCode]) => {
+  //     if (useOverride) {
+  //       return this.overrideStations$;
+  //     } else {
+  //       return this.radioBrowserService.getStationsByCountryCode$(countryCode);
+  //     }
+  //   })
+  // );
+
+  private stationsSubject = new BehaviorSubject<RadioBrowserStation[]>([]);
+  stations$ = this.stationsSubject.asObservable();
+
+  loadingStationsSubject = new BehaviorSubject<boolean>(false);
+  loadingStations$ = this.loadingStationsSubject.asObservable();
+
+  setStations(countryCode: string | null, stations: RadioBrowserStation[]) {
+    this.stationsSubject.next(stations);
+    this.countryCodeSubject.next(countryCode);
   }
-
-  // To disable override and go back to live data
-  disableOverride() {
-    this.useOverride$.next(false);
-  }
-
-  stations$ = combineLatest([this.useOverride$, this.countryCode$]).pipe(
-    switchMap(([useOverride, countryCode]) => {
-      if (useOverride) {
-        return this.overrideStations$;
-      } else {
-        return this.radioBrowserService.getStationsByCountryCode$(countryCode);
-      }
-    })
-  );
 
   filteredStations$ = combineLatest([
     this.stations$,
@@ -216,20 +226,12 @@ export class SidebarService {
     });
   }
 
-  isValidUrl(url: string) {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
   http = inject(HttpClient);
+  paletteProxyUrl = 'http://localhost:3000';
 
   getPalette(imageUrl: string): Observable<{ palette: Palette }> {
     return this.http.get<{ palette: Palette }>(
-      `http://localhost:3000/palette?url=${imageUrl}`
+      `${this.paletteProxyUrl}/palette?url=${imageUrl}`
     );
   }
 

@@ -33,6 +33,7 @@ export class SidebarComponent {
   radioBrowserService = inject(RadioBrowserApiService);
 
   filteredStations$ = this.sidebarService.filteredStations$;
+  countryCode$ = this.sidebarService.countryCode$;
 
   searchTerm: string = '';
 

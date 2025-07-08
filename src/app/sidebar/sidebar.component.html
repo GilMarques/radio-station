@@ -42,47 +42,65 @@
     </div>
   </div>
 
-  <div class="mb-4">
-    <p-inputgroup>
-      <p-inputgroup-addon>
-        <i class="fas fa-magnifying-glass"></i>
-      </p-inputgroup-addon>
-      <input
-        type="search"
-        pInputText
-        [(ngModel)]="searchTerm"
-        class="w-full"
-        (ngModelChange)="onSearch($event)"
+  <ng-container *ngIf="countryCode$ | async as countryCode">
+    <div class="mb-4">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="fas fa-magnifying-glass"></i>
+        </p-inputgroup-addon>
+        <input
+          type="search"
+          pInputText
+          [(ngModel)]="searchTerm"
+          class="w-full"
+          (ngModelChange)="onSearch($event)"
+        />
+      </p-inputgroup>
+    </div>
+
+    <div
+      class="flex flex-col gap-2 overflow-x-hidden overflow-y-auto stations-list"
+    >
+      @for (station of filteredStations$ | async; let i = $index; track $index )
+      {
+
+      <button (click)="selectStation(station)" class="station-item">
+        <img
+          *ngIf="sidebarService.getThumbnailUrl(station)"
+          [src]="sidebarService.getThumbnailUrl(station)"
+          alt="{{ station.name }}"
+          title="{{ station.name }}"
+          loading="lazy"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+        />
+
+        <i
+          #fallbackIcon
+          class="fa-solid fa-xl fa-radio"
+          style="display: none"
+        ></i>
+
+        <span class="font-bold text-left">{{
+          station.name | ellipsis : 30
+        }}</span>
+      </button>
+
+      }
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!(countryCode$ | async)">
+    <div
+      class="flex flex-col justify-center items-center h-[calc(100vh)] gap-4"
+    >
+      No Country Selected
+
+      <p-button
+        icon="fa fa-arrow-right"
+        label="Pick a country"
+        iconPos="right"
+        rounded="true"
+        (click)="onGlobeClick()"
       />
-    </p-inputgroup>
-  </div>
-
-  <div
-    class="flex flex-col gap-2 overflow-x-hidden overflow-y-auto stations-list"
-  >
-    @for (station of filteredStations$ | async; let i = $index; track $index ) {
-
-    <button (click)="selectStation(station)" class="station-item">
-      <img
-        *ngIf="sidebarService.getThumbnailUrl(station)"
-        [src]="sidebarService.getThumbnailUrl(station)"
-        alt="{{ station.name }}"
-        title="{{ station.name }}"
-        loading="lazy"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
-      />
-
-      <i
-        #fallbackIcon
-        class="fa-solid fa-xl fa-radio"
-        style="display: none"
-      ></i>
-
-      <span class="font-bold text-left">{{
-        station.name | ellipsis : 30
-      }}</span>
-    </button>
-
-    }
-  </div>
+    </div>
+  </ng-container>
 </div>

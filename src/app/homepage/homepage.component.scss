@@ -46,7 +46,7 @@
 }
 
 .ripple-box span:nth-child(1) {
-  animation-delay: -2s;
+  animation-delay: 0s;
   animation-duration: 9s;
   background-color: #004b97;
   top: 100px;
@@ -64,7 +64,7 @@
 }
 
 .ripple-box span:nth-child(3) {
-  animation-delay: -6s;
+  animation-delay: -2s;
   animation-duration: 7s;
   background-color: #208fff;
   bottom: 100px;
