@@ -7,7 +7,7 @@ export const routes: Routes = [
     component: HomepageComponent,
   },
   {
-    path: ':stationuuid',
+    path: ':id',
     component: HomepageComponent,
   },
 ];

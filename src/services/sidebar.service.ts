@@ -66,6 +66,23 @@ export class SidebarService {
     this.countryCodeSubject.next(countryCode);
   }
 
+  setFromId(id: string) {
+    this.loadingSubject.next(true);
+    this.radioBrowserService.getStationById$(id).subscribe((station) => {
+      console.log(station);
+      this.setSelectedStation(station[0]);
+      this.fetchStationsByCountryCode(station[0].countrycode);
+    });
+  }
+
+  fetchStationsByCountryCode(countryCode: string) {
+    this.radioBrowserService
+      .getStationsByCountryCode$(countryCode)
+      .subscribe((stations) => {
+        this.setStations(countryCode, stations);
+      });
+  }
+
   filteredStations$ = combineLatest([
     this.stations$,
     this.searchTerm$,

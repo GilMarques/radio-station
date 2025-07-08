@@ -60,6 +60,12 @@ export class RadioBrowserApiService {
       );
   }
 
+  getStationById(id: string): Observable<RadioBrowserStation[]> {
+    return this.http.get<RadioBrowserStation[]>(
+      `https://de2.api.radio-browser.info/json/stations/byuuid/${id}`
+    );
+  }
+
   private baseUrlsSubject = new BehaviorSubject<RadioBrowserBase[] | null>(
     null
   );
@@ -77,12 +83,22 @@ export class RadioBrowserApiService {
   getStationsByCountryCode$(
     countryCode: string
   ): Observable<RadioBrowserStation[]> {
+    countryCode = countryCode.toLowerCase();
+
     return this.baseUrls$.pipe(
       switchMap((urls) => {
         if (!urls || urls.length === 0) {
           return throwError(() => new Error('No base URLs found'));
         }
         return this.getStationsList(urls[this.selectIndex].name, countryCode);
+      })
+    );
+  }
+
+  getStationById$(id: string): Observable<RadioBrowserStation[]> {
+    return this.baseUrls$.pipe(
+      switchMap((urls) => {
+        return this.getStationById(id);
       })
     );
   }

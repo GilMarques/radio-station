@@ -1,34 +1,5 @@
 <ng-container *ngIf="!(loading$ | async)">
-  <ng-container *ngIf="!(selectedStation$ | async)">
-    <div
-      class="relative rounded-3xl bg-surface-200 m-6 p-6 m-6 h-[calc(100%-130px)] animate-fadein animate-duration-500 flex justify-center items-center overflow-hidden"
-      style="box-shadow: 0 3px 4px #0000001a, 0 24px 36px #0000000a"
-    >
-      <div class="ripple-container">
-        <div class="ripple-box">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-      <div class="relative">
-        <h1
-          class="text-[72px] whitespace-nowrap font-bold animate-fadeindown animate-duration-700"
-        >
-          Radio Station
-        </h1>
-      </div>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="selectedStation$ | async as selectedStation">
+  <ng-container *ngIf="selectedStation$ | async as selectedStation; else home">
     <audio-visualizer
       [selectedStation]="selectedStation.station"
       [palette]="selectedStation.palette"
@@ -41,3 +12,32 @@
     <app-loader style="transform: scale(3)"></app-loader>
   </div>
 </ng-container>
+
+<ng-template #home>
+  <div
+    class="relative rounded-3xl bg-surface-200 m-6 p-6 m-6 h-[calc(100%-130px)] animate-fadein animate-duration-500 flex justify-center items-center overflow-hidden"
+    style="box-shadow: 0 3px 4px #0000001a, 0 24px 36px #0000000a"
+  >
+    <div class="ripple-container">
+      <div class="ripple-box">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="relative">
+      <h1
+        class="text-[72px] whitespace-nowrap font-bold animate-fadeindown animate-duration-700"
+      >
+        Radio Station
+      </h1>
+    </div>
+  </div>
+</ng-template>

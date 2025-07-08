@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { RadioBrowserStation } from '../../services/radio-browser/radio-browser-api.model';
 import { SidebarService } from '../../services/sidebar.service';
+import { Palette } from '../../services/vibrant.model';
 import { LoaderComponent } from '../../shared/loader/loader.component';
 import { AudioVisualizerComponent } from '../audio-visualizer/audio-visualizer.component';
 
@@ -21,5 +24,18 @@ export class HomepageComponent {
   selectedStation$ = this.sidebarService.selectedStation$;
   loading$ = this.sidebarService.loading$;
 
+  route = inject(ActivatedRoute);
+
+  selectedStation: {
+    station: RadioBrowserStation | null;
+    palette: Palette | null;
+  } | null = null;
+
   constructor() {}
+
+  ngOnInit() {
+    this.route.paramMap.subscribe((params) => {
+      this.sidebarService.setFromId(params.get('id') ?? '');
+    });
+  }
 }
