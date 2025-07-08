@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { RadioBrowserStation } from '../../services/radio-browser/radio-browser-api.model';
+
+import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { SidebarService } from '../../services/sidebar.service';
 import { Palette } from '../../services/vibrant.model';
 import { LoaderComponent } from '../../shared/loader/loader.component';
@@ -27,7 +28,7 @@ export class HomepageComponent {
   route = inject(ActivatedRoute);
 
   selectedStation: {
-    station: RadioBrowserStation | null;
+    station: RadioBrowserApi.Station | null;
     palette: Palette | null;
   } | null = null;
 

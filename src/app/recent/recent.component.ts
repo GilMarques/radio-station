@@ -8,7 +8,8 @@ import {
   Output,
 } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-import { RadioBrowserStation } from '../../services/radio-browser/radio-browser-api.model';
+
+import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { SidebarService } from '../../services/sidebar.service';
 import { StorageService } from '../../services/storage.service';
 
@@ -30,7 +31,7 @@ export class RecentComponent {
   recentFilled = computed(() => {
     const recents = this.recent();
     // If recents has less than 20 elements, fill the rest with null
-    const filled: (RadioBrowserStation | null)[] = [...recents];
+    const filled: (RadioBrowserApi.Station | null)[] = [...recents];
     while (filled.length < 24) {
       filled.push(null);
     }
@@ -41,7 +42,7 @@ export class RecentComponent {
     this.storageService.getRecent();
   }
 
-  selectStation(station: RadioBrowserStation | null) {
+  selectStation(station: RadioBrowserApi.Station | null) {
     if (!station) return;
     this.sidebarService.setSelectedStation(station);
     this.close.emit();

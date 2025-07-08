@@ -6,7 +6,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ListboxModule } from 'primeng/listbox';
 import { BehaviorSubject, map } from 'rxjs';
-import { RadioBrowserCountry } from '../../../services/radio-browser/radio-browser-api.model';
+import { RadioBrowserApi } from '../../../services/radio-browser/radio-browser-api.model';
 
 @Component({
   selector: 'app-world-list',
@@ -24,7 +24,7 @@ import { RadioBrowserCountry } from '../../../services/radio-browser/radio-brows
 })
 export class WorldListComponent {
   countriesByContinent =
-    input.required<Record<string, RadioBrowserCountry[]>>();
+    input.required<Record<string, RadioBrowserApi.Country[]>>();
 
   searchTerm = '';
 
@@ -48,14 +48,14 @@ export class WorldListComponent {
     this.searchTermSubject.next(event);
   }
 
-  selectedCountry = output<RadioBrowserCountry>();
-  hoveredCountry = output<RadioBrowserCountry | null>();
+  selectedCountry = output<RadioBrowserApi.Country>();
+  hoveredCountry = output<RadioBrowserApi.Country | null>();
 
-  onCountrySelect(country: RadioBrowserCountry) {
+  onCountrySelect(country: RadioBrowserApi.Country) {
     this.selectedCountry.emit(country);
   }
 
-  onCountryMouseEnter(country: RadioBrowserCountry) {
+  onCountryMouseEnter(country: RadioBrowserApi.Country) {
     this.hoveredCountry.emit(country);
   }
 

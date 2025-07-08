@@ -21,7 +21,7 @@ import { CustomSliderComponent } from '../../shared/custom-slider/custom-slider.
 
 import { ChipModule } from 'primeng/chip';
 import { PopoverModule } from 'primeng/popover';
-import { RadioBrowserStation } from '../../services/radio-browser/radio-browser-api.model';
+import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { SidebarService } from '../../services/sidebar.service';
 import { StorageService } from '../../services/storage.service';
 
@@ -41,7 +41,7 @@ import { StorageService } from '../../services/storage.service';
   styleUrl: './audio-visualizer.component.scss',
 })
 export class AudioVisualizerComponent {
-  selectedStation = input.required<RadioBrowserStation>();
+  selectedStation = input.required<RadioBrowserApi.Station>();
   palette = input.required<Palette | null>();
 
   audioElement: HTMLMediaElement | null = null;
@@ -213,11 +213,11 @@ export class AudioVisualizerComponent {
     this.sidebarService.onNextStation();
   }
 
-  visitHomepage(station: RadioBrowserStation) {
+  visitHomepage(station: RadioBrowserApi.Station) {
     window.open(station.homepage, '_blank');
   }
 
-  getThumbnailUrl(station: RadioBrowserStation): string {
+  getThumbnailUrl(station: RadioBrowserApi.Station): string {
     return station.favicon
       ? station.favicon
       : station.homepage + '/favicon.ico';
@@ -239,7 +239,7 @@ export class AudioVisualizerComponent {
     return 'black';
   }
 
-  onShare(station: RadioBrowserStation) {
+  onShare(station: RadioBrowserApi.Station) {
     const shareData = {
       title: station.name,
       text: `Listen to ${station.name} on Radio Station App`,

@@ -10,10 +10,8 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TabsModule } from 'primeng/tabs';
-import {
-  RadioBrowserCountry,
-  RadioBrowserStation,
-} from '../../services/radio-browser/radio-browser-api.model';
+
+import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
 import { SidebarService } from '../../services/sidebar.service';
 import { countryByContinent } from './world-list/country-by-continent';
@@ -40,7 +38,7 @@ export class WorldFilterComponent {
 
   close = output<void>();
 
-  countryList: RadioBrowserCountry[] = [];
+  countryList: RadioBrowserApi.Country[] = [];
 
   countriesByContinent = countryByContinent;
 
@@ -52,16 +50,17 @@ export class WorldFilterComponent {
 
   radioBrowserService = inject(RadioBrowserApiService);
 
-  radioBrowserCountriesByContinent: Record<string, RadioBrowserCountry[]> = {};
+  radioBrowserCountriesByContinent: Record<string, RadioBrowserApi.Country[]> =
+    {};
 
   @ViewChild('worldMap') worldMap!: WorldMapComponent;
 
   sidebarService = inject(SidebarService);
 
-  hoveredCountry = signal<RadioBrowserCountry | null>(null);
-  selectedCountry = signal<RadioBrowserCountry | null>(null);
+  hoveredCountry = signal<RadioBrowserApi.Country | null>(null);
+  selectedCountry = signal<RadioBrowserApi.Country | null>(null);
 
-  onHoveredCountry(country: RadioBrowserCountry | null) {
+  onHoveredCountry(country: RadioBrowserApi.Country | null) {
     this.hoveredCountry.set(country);
   }
 
@@ -87,7 +86,7 @@ export class WorldFilterComponent {
 
     // Group the countryList by continent
     this.radioBrowserCountriesByContinent = this.countryList.reduce(
-      (acc: Record<string, RadioBrowserCountry[]>, country) => {
+      (acc: Record<string, RadioBrowserApi.Country[]>, country) => {
         const continent = codeToContinent.get(country.iso_3166_1);
         if (!continent) return acc;
         if (!acc[continent]) {
@@ -100,16 +99,16 @@ export class WorldFilterComponent {
     );
   }
 
-  onSelectedCountry(country: RadioBrowserCountry) {
+  onSelectedCountry(country: RadioBrowserApi.Country) {
     this.selectedCountry.set(country);
   }
 
-  onSelectCountry(country: RadioBrowserCountry) {
+  onSelectCountry(country: RadioBrowserApi.Country) {
     this.sidebarService.setCountryCode(country.iso_3166_1);
     this.close.emit();
   }
 
-  onSelectedStations(stations: RadioBrowserStation[]) {
+  onSelectedStations(stations: RadioBrowserApi.Station[]) {
     this.sidebarService.setStations(
       this.selectedCountry()?.iso_3166_1 || null,
       stations

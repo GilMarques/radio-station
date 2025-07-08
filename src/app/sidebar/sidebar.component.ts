@@ -6,10 +6,9 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { MenuModule } from 'primeng/menu';
 
-import { RadioBrowserStation } from '../../services/radio-browser/radio-browser-api.model';
-
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
 import { SidebarService } from '../../services/sidebar.service';
 import { EllipsisPipe } from '../../shared/ellipsis.pipe';
@@ -41,9 +40,11 @@ export class SidebarComponent {
 
   @Output() selectedStation: EventEmitter<void> = new EventEmitter();
 
+  RadioBrowserApi = RadioBrowserApi;
+
   constructor() {}
 
-  selectStation(station: RadioBrowserStation) {
+  selectStation(station: RadioBrowserApi.Station) {
     this.sidebarService.setSelectedStation(station);
     this.selectedStation.emit();
   }

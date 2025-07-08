@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { RadioBrowserStation } from './radio-browser/radio-browser-api.model';
+import { RadioBrowserApi } from './radio-browser/radio-browser-api.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,14 +18,15 @@ export class StorageService {
     localStorage.removeItem(key);
   }
 
-  recent = signal<RadioBrowserStation[]>([]);
+  recent = signal<RadioBrowserApi.Station[]>([]);
 
-  addRecent(station: RadioBrowserStation) {
-    let recent: RadioBrowserStation[] = this.get('recent') ?? [];
+  addRecent(station: RadioBrowserApi.Station) {
+    let recent: RadioBrowserApi.Station[] = this.get('recent') ?? [];
 
     // Remove if already exists
     recent = recent.filter(
-      (item: RadioBrowserStation) => item.stationuuid !== station.stationuuid
+      (item: RadioBrowserApi.Station) =>
+        item.stationuuid !== station.stationuuid
     );
 
     // Add to the front
@@ -39,7 +40,7 @@ export class StorageService {
     this.recent.set(cappedRecent);
   }
 
-  favorites = signal<RadioBrowserStation[]>([]);
+  favorites = signal<RadioBrowserApi.Station[]>([]);
 
   getRecent() {
     const recent = this.get('recent') ?? [];
@@ -51,7 +52,7 @@ export class StorageService {
     this.favorites.set(favorites);
   }
 
-  toggleFavorite(station: RadioBrowserStation) {
+  toggleFavorite(station: RadioBrowserApi.Station) {
     const isFavorite = this.isFavorite(station.stationuuid);
 
     if (isFavorite) {
@@ -61,7 +62,7 @@ export class StorageService {
     }
   }
 
-  private addFavorite(station: RadioBrowserStation) {
+  private addFavorite(station: RadioBrowserApi.Station) {
     const favorites = this.get('favorites') ?? [];
 
     favorites.push(station);
@@ -69,10 +70,10 @@ export class StorageService {
     this.favorites.set(favorites);
   }
 
-  private removeFavorite(station: RadioBrowserStation) {
+  private removeFavorite(station: RadioBrowserApi.Station) {
     const favorites = this.get('favorites') ?? [];
     const updatedFavorites = favorites.filter(
-      (favorite: RadioBrowserStation) =>
+      (favorite: RadioBrowserApi.Station) =>
         favorite.stationuuid !== station.stationuuid
     );
     this.set('favorites', updatedFavorites);
@@ -81,7 +82,8 @@ export class StorageService {
 
   isFavorite(stationuuid: string) {
     return this.favorites().some(
-      (favorite: RadioBrowserStation) => favorite.stationuuid === stationuuid
+      (favorite: RadioBrowserApi.Station) =>
+        favorite.stationuuid === stationuuid
     );
   }
 }

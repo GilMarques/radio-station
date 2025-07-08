@@ -8,7 +8,6 @@ import {
   Observable,
   tap,
 } from 'rxjs';
-import { RadioBrowserStation } from './radio-browser/radio-browser-api.model';
 
 import { HttpClient } from '@angular/common/http';
 import { RadioBrowserApiService } from './radio-browser/radio-browser-api.service';
@@ -18,6 +17,7 @@ import { Palette } from './vibrant.model';
 import { Location } from '@angular/common';
 
 import { Vibrant } from 'node-vibrant/browser';
+import { RadioBrowserApi } from './radio-browser/radio-browser-api.model';
 
 type SortOption =
   | 'name-asc'
@@ -55,13 +55,13 @@ export class SidebarService {
     this.sortOptionSubject.next(`${sortKey}-${sortDirection!}`);
   }
 
-  private stationsSubject = new BehaviorSubject<RadioBrowserStation[]>([]);
+  private stationsSubject = new BehaviorSubject<RadioBrowserApi.Station[]>([]);
   stations$ = this.stationsSubject.asObservable();
 
   loadingStationsSubject = new BehaviorSubject<boolean>(false);
   loadingStations$ = this.loadingStationsSubject.asObservable();
 
-  setStations(countryCode: string | null, stations: RadioBrowserStation[]) {
+  setStations(countryCode: string | null, stations: RadioBrowserApi.Station[]) {
     this.stationsSubject.next(stations);
     this.countryCodeSubject.next(countryCode);
   }
@@ -110,9 +110,9 @@ export class SidebarService {
   }
 
   private sortStations(
-    stations: RadioBrowserStation[],
+    stations: RadioBrowserApi.Station[],
     sortOption: SortOption
-  ): RadioBrowserStation[] {
+  ): RadioBrowserApi.Station[] {
     if (sortOption === 'none') return stations;
 
     return stations.sort((a, b) => {
@@ -135,17 +135,17 @@ export class SidebarService {
     });
   }
 
-  filteredStationsList: RadioBrowserStation[] = [];
+  filteredStationsList: RadioBrowserApi.Station[] = [];
 
   paletteMap = new Map<string, Palette | null>();
 
   selectedStationSubject = new BehaviorSubject<{
-    station: RadioBrowserStation;
+    station: RadioBrowserApi.Station;
     palette: Palette | null;
   } | null>(null);
   selectedStation$ = this.selectedStationSubject.asObservable();
 
-  selectedStation?: RadioBrowserStation;
+  selectedStation?: RadioBrowserApi.Station;
 
   loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
@@ -154,25 +154,7 @@ export class SidebarService {
 
   storageService = inject(StorageService);
 
-  getThumbnailUrl(station: RadioBrowserStation): string {
-    return station.favicon
-      ? station.favicon
-      : station.homepage + '/favicon.ico';
-  }
-
-  getStationCountryCode(station: RadioBrowserStation): string {
-    if (station.iso_3166_2) {
-      return station.iso_3166_2;
-    }
-
-    if (station.countrycode) {
-      return station.countrycode;
-    }
-
-    return '';
-  }
-
-  setSelectedStation(station: RadioBrowserStation) {
+  setSelectedStation(station: RadioBrowserApi.Station) {
     this.storageService.addRecent(station);
     this.selectedStation = station;
 
@@ -182,12 +164,12 @@ export class SidebarService {
       return;
     }
 
-    const imageUrl = this.getThumbnailUrl(station);
+    const imageUrl = RadioBrowserApi.getThumbnailUrl(station);
     this.fetchPaletteWithFallback(station, imageUrl);
   }
 
   private updateSelectedStation(
-    station: RadioBrowserStation,
+    station: RadioBrowserApi.Station,
     palette: Palette | null
   ) {
     this.selectedStationSubject.next({ station, palette });
@@ -195,7 +177,7 @@ export class SidebarService {
   }
 
   private fetchPaletteWithFallback(
-    station: RadioBrowserStation,
+    station: RadioBrowserApi.Station,
     imageUrl: string
   ) {
     this.loadingSubject.next(true);

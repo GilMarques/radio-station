@@ -8,11 +8,7 @@ import {
   switchMap,
   throwError,
 } from 'rxjs';
-import {
-  RadioBrowserBase,
-  RadioBrowserCountry,
-  RadioBrowserStation,
-} from './radio-browser-api.model';
+import { RadioBrowserApi } from './radio-browser-api.model';
 
 // https://api.radio-browser.info/
 
@@ -26,15 +22,15 @@ export class RadioBrowserApiService {
     this.fetchBaseUrls();
   }
 
-  getBaseUrls(): Observable<RadioBrowserBase[]> {
+  getBaseUrls(): Observable<RadioBrowserApi.BaseUrl[]> {
     return of([{ ip: '1', name: 'asdf' }]);
-    return this.http.get<RadioBrowserBase[]>(
+    return this.http.get<RadioBrowserApi.BaseUrl[]>(
       'https://all.api.radio-browser.info/json/servers'
     );
   }
 
-  getServerCountries(baseUrl: string): Observable<RadioBrowserCountry[]> {
-    return this.http.get<RadioBrowserCountry[]>(
+  getServerCountries(baseUrl: string): Observable<RadioBrowserApi.Country[]> {
+    return this.http.get<RadioBrowserApi.Country[]>(
       `https://de2.api.radio-browser.info/json/countries`
     );
   }
@@ -42,9 +38,9 @@ export class RadioBrowserApiService {
   getStationsList(
     baseUrl: string,
     countryCode: string
-  ): Observable<RadioBrowserStation[]> {
+  ): Observable<RadioBrowserApi.Station[]> {
     return this.http
-      .get<RadioBrowserStation[]>(
+      .get<RadioBrowserApi.Station[]>(
         `https://de2.api.radio-browser.info/json/stations/bycountrycodeexact/${countryCode}?order=clickcount&reverse=true`
       )
       .pipe(
@@ -60,15 +56,15 @@ export class RadioBrowserApiService {
       );
   }
 
-  getStationById(id: string): Observable<RadioBrowserStation[]> {
-    return this.http.get<RadioBrowserStation[]>(
+  getStationById(id: string): Observable<RadioBrowserApi.Station[]> {
+    return this.http.get<RadioBrowserApi.Station[]>(
       `https://de2.api.radio-browser.info/json/stations/byuuid/${id}`
     );
   }
 
-  private baseUrlsSubject = new BehaviorSubject<RadioBrowserBase[] | null>(
-    null
-  );
+  private baseUrlsSubject = new BehaviorSubject<
+    RadioBrowserApi.BaseUrl[] | null
+  >(null);
   baseUrls$ = this.baseUrlsSubject.asObservable();
 
   selectIndex = 0;
@@ -82,7 +78,7 @@ export class RadioBrowserApiService {
 
   getStationsByCountryCode$(
     countryCode: string
-  ): Observable<RadioBrowserStation[]> {
+  ): Observable<RadioBrowserApi.Station[]> {
     countryCode = countryCode.toLowerCase();
 
     return this.baseUrls$.pipe(
@@ -95,7 +91,7 @@ export class RadioBrowserApiService {
     );
   }
 
-  getStationById$(id: string): Observable<RadioBrowserStation[]> {
+  getStationById$(id: string): Observable<RadioBrowserApi.Station[]> {
     return this.baseUrls$.pipe(
       switchMap((urls) => {
         return this.getStationById(id);
@@ -103,7 +99,7 @@ export class RadioBrowserApiService {
     );
   }
 
-  get countries$(): Observable<RadioBrowserCountry[]> {
+  get countries$(): Observable<RadioBrowserApi.Country[]> {
     return this.baseUrls$.pipe(
       switchMap((urls) => {
         if (!urls || urls.length === 0) {

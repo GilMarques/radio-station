@@ -14,14 +14,11 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { PopoverModule } from 'primeng/popover';
-import {
-  RadioBrowserCountry,
-  RadioBrowserStation,
-} from '../../../services/radio-browser/radio-browser-api.model';
 
 import * as d3 from 'd3';
 
 import { BehaviorSubject, of, switchMap, tap } from 'rxjs';
+import { RadioBrowserApi } from '../../../services/radio-browser/radio-browser-api.model';
 import { RadioBrowserApiService } from '../../../services/radio-browser/radio-browser-api.service';
 import { LoaderComponent } from '../../../shared/loader/loader.component';
 import { convert2CodeTo3Code, convert3CodeTo2Code } from './3code2code';
@@ -43,9 +40,9 @@ import { convert2CodeTo3Code, convert3CodeTo2Code } from './3code2code';
 export class WorldMapComponent {
   @ViewChild('mapContainer') mapContainer!: ElementRef;
 
-  @Input({ required: true }) countryList!: RadioBrowserCountry[];
-  hoveredCountry = input.required<RadioBrowserCountry | null>();
-  selectedCountry = input.required<RadioBrowserCountry | null>();
+  @Input({ required: true }) countryList!: RadioBrowserApi.Country[];
+  hoveredCountry = input.required<RadioBrowserApi.Country | null>();
+  selectedCountry = input.required<RadioBrowserApi.Country | null>();
 
   @ViewChild('worldMap') worldMap!: ElementRef;
 
@@ -196,7 +193,7 @@ export class WorldMapComponent {
     this.g.selectAll('g.station-group').remove();
   }
 
-  addStations(stations: RadioBrowserStation[]) {
+  addStations(stations: RadioBrowserApi.Station[]) {
     const self = this;
     const stationGroups: any[] = [];
     this.g
@@ -209,7 +206,7 @@ export class WorldMapComponent {
       .enter()
       .append('g')
       .attr('class', 'station-group')
-      .each(function (this: any, s: RadioBrowserStation, i: number) {
+      .each(function (this: any, s: RadioBrowserApi.Station, i: number) {
         const coords = self.projection([s.geo_long, s.geo_lat]);
         if (!coords) return;
 
@@ -291,10 +288,10 @@ export class WorldMapComponent {
   loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
 
-  stationsList: RadioBrowserStation[] = [];
+  stationsList: RadioBrowserApi.Station[] = [];
 
-  onSelectedCountry = output<RadioBrowserCountry>();
-  onSelectedStations = output<RadioBrowserStation[]>();
+  onSelectedCountry = output<RadioBrowserApi.Country>();
+  onSelectedStations = output<RadioBrowserApi.Station[]>();
 
   selectStations() {
     this.onSelectedStations.emit(this.stationsList);
