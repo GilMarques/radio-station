@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
@@ -12,11 +11,12 @@ import { WorldFilterComponent } from './world-filter/world-filter.component';
 
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SidebarService } from '../services/sidebar.service';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet,
     FooterComponent,
     WorldFilterComponent,
     SidebarComponent,
@@ -28,6 +28,7 @@ import { Subscription } from 'rxjs';
     ButtonModule,
     NgTemplateOutlet,
     CommonModule,
+    RouterModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -44,6 +45,8 @@ export class AppComponent {
 
   breakpointSub!: Subscription;
   breakpointObserver = inject(BreakpointObserver);
+
+  sidebarService = inject(SidebarService);
 
   ngAfterViewInit(): void {
     this.breakpointSub = this.breakpointObserver

@@ -58,29 +58,40 @@ export class SidebarService {
   private stationsSubject = new BehaviorSubject<RadioBrowserApi.Station[]>([]);
   stations$ = this.stationsSubject.asObservable();
 
-  loadingStationsSubject = new BehaviorSubject<boolean>(false);
+  private loadingStationsSubject = new BehaviorSubject<boolean>(true);
   loadingStations$ = this.loadingStationsSubject.asObservable();
+
+  setLoadingStations(loading: boolean) {
+    this.loadingStationsSubject.next(loading);
+  }
 
   setStations(countryCode: string | null, stations: RadioBrowserApi.Station[]) {
     this.stationsSubject.next(stations);
     this.countryCodeSubject.next(countryCode);
   }
 
-  setFromId(id: string) {
-    this.loadingSubject.next(true);
+  setFromId(id: string | null) {
+    if (!id) {
+      this.setLoadingStations(false);
+      return;
+    }
+    this.setLoadingStations(true);
     this.radioBrowserService.getStationById$(id).subscribe((station) => {
-      console.log(station);
       this.setSelectedStation(station[0]);
       this.fetchStationsByCountryCode(station[0].countrycode);
     });
   }
 
   fetchStationsByCountryCode(countryCode: string) {
-    this.radioBrowserService
-      .getStationsByCountryCode$(countryCode)
-      .subscribe((stations) => {
+    this.radioBrowserService.getStationsByCountryCode$(countryCode).subscribe({
+      next: (stations) => {
         this.setStations(countryCode, stations);
-      });
+        this.setLoadingStations(false);
+      },
+      error: () => {
+        this.setLoadingStations(false);
+      },
+    });
   }
 
   filteredStations$ = combineLatest([
@@ -98,7 +109,6 @@ export class SidebarService {
 
     tap((stations) => {
       this.filteredStationsList = stations;
-      console.log(stations);
     })
   );
 
@@ -249,7 +259,7 @@ export class SidebarService {
     const randomIndex = Math.floor(
       Math.random() * this.filteredStationsList.length
     );
-    console.log(this.filteredStationsList);
+
     this.setSelectedStation(this.filteredStationsList[randomIndex]);
   }
 

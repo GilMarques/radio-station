@@ -36,7 +36,9 @@ export class HomepageComponent {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      this.sidebarService.setFromId(params.get('id') ?? '');
+      const id = params.get('id');
+
+      this.sidebarService.setFromId(id);
     });
   }
 }

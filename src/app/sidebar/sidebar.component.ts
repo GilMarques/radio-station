@@ -12,6 +12,7 @@ import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.
 import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
 import { SidebarService } from '../../services/sidebar.service';
 import { EllipsisPipe } from '../../shared/ellipsis.pipe';
+import { LoaderComponent } from '../../shared/loader/loader.component';
 @Component({
   selector: 'app-sidebar',
   imports: [
@@ -23,6 +24,7 @@ import { EllipsisPipe } from '../../shared/ellipsis.pipe';
     InputGroupModule,
     InputGroupAddonModule,
     EllipsisPipe,
+    LoaderComponent,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
@@ -33,6 +35,8 @@ export class SidebarComponent {
 
   filteredStations$ = this.sidebarService.filteredStations$;
   countryCode$ = this.sidebarService.countryCode$;
+
+  loadingStations$ = this.sidebarService.loadingStations$;
 
   searchTerm: string = '';
 
