@@ -11,7 +11,6 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
 import { SidebarService } from '../../services/sidebar.service';
-import { EllipsisPipe } from '../../shared/ellipsis.pipe';
 import { LoaderComponent } from '../../shared/loader/loader.component';
 @Component({
   selector: 'app-sidebar',
@@ -23,7 +22,7 @@ import { LoaderComponent } from '../../shared/loader/loader.component';
     MenuModule,
     InputGroupModule,
     InputGroupAddonModule,
-    EllipsisPipe,
+
     LoaderComponent,
   ],
   templateUrl: './sidebar.component.html',
