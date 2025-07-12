@@ -122,26 +122,24 @@ export class ContributeComponent {
 
   ngOnInit() {
     //get countries
-    this.radioBrowserApiService.getCountries('de2').subscribe((countries) => {
+    this.radioBrowserApiService.getCountries$().subscribe((countries) => {
       this.countriesSubject.next(countries);
     });
 
     //get languages
-    this.radioBrowserApiService.getLanguages('de2').subscribe((languages) => {
+    this.radioBrowserApiService.getLanguages$().subscribe((languages) => {
       this.languagesSubject.next(languages);
     });
     //get tags
-    this.radioBrowserApiService.getTags('de2').subscribe((tags) => {
+    this.radioBrowserApiService.getTags$().subscribe((tags) => {
       this.tagsSubject.next(tags);
     });
   }
 
   fetchCountryStates(countryName: string) {
-    this.radioBrowserApiService
-      .getStates('de2', countryName)
-      .subscribe((states) => {
-        this.statesSubject.next(states);
-      });
+    this.radioBrowserApiService.getStates$(countryName).subscribe((states) => {
+      this.statesSubject.next(states);
+    });
   }
 
   searchCountries(event: AutoCompleteCompleteEvent) {

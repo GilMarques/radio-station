@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 
-import { SelectModule } from 'primeng/select';
+import { SelectChangeEvent, SelectModule } from 'primeng/select';
+import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
 @Component({
   selector: 'app-footer',
   imports: [ButtonModule, SelectModule, FormsModule, CommonModule],
@@ -11,15 +12,30 @@ import { SelectModule } from 'primeng/select';
   styleUrl: './footer.component.scss',
 })
 export class FooterComponent {
-  // TODO: SELECT SERVER
-  urls = [
-    { name: 'FI1', code: 'AU' },
-    { name: 'FI2', code: 'BR' },
-    { name: 'DE1', code: 'CN' },
-  ];
+  radioBrowserApiService = inject(RadioBrowserApiService);
+  baseUrls$ = this.radioBrowserApiService.baseUrls$;
 
-  selectedUrl: any;
+  selectedUrl: { name: string; ip: string; label: string } | null = null;
 
-  // TODO: Add station
-  onAddStation() {}
+  selectedBaseUrl$ = this.radioBrowserApiService.selectedBaseUrl$;
+
+  ngOnInit() {
+    this.selectedBaseUrl$.subscribe((url) => {
+      if (!url) return;
+      this.selectedUrl = {
+        name: url.name,
+        ip: url.ip,
+        label: url.name.split('.')[0],
+      };
+    });
+  }
+
+  onBaseUrlChange(event: SelectChangeEvent) {
+    const url = event.value as { name: string; ip: string };
+
+    this.radioBrowserApiService.setSelectedBaseUrl({
+      ip: url.ip,
+      name: url.name,
+    });
+  }
 }

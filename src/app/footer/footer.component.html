@@ -6,17 +6,26 @@
 
     <div class="flex items-center gap-2">
       <p-select
-        [options]="urls"
+        [options]="(baseUrls$ | async) || []"
         [(ngModel)]="selectedUrl"
-        optionLabel="name"
         class="w-24"
         size="small"
+        [variant]="'filled'"
         [styleClass]="'font-mono'"
+        [disabled]="((baseUrls$ | async) || [])?.length === 0"
+        (onChange)="onBaseUrlChange($event)"
       >
         <ng-template #selectedItem let-selectedOption>
           <div class="flex items-center gap-2" *ngIf="selectedOption">
             <i class="fa-solid fa-database"></i>
-            <div>{{ selectedOption.name }}</div>
+            <span>{{ selectedOption.label.toUpperCase() }}</span>
+          </div>
+        </ng-template>
+
+        <ng-template #item let-option>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-database"></i>
+            <span>{{ option.label.toUpperCase() }}</span>
           </div>
         </ng-template>
       </p-select>
