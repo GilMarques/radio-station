@@ -1,0 +1,43 @@
+<div class="flex flex-col gap-1">
+  <p-inputgroup>
+    @if (icon) {
+    <p-inputgroup-addon [class.p-invalid]="isInvalid()">
+      <i [class]="icon"></i>
+    </p-inputgroup-addon>
+    }
+    <input
+      pInputText
+      class="w-full"
+      [class.ng-invalid]="control.invalid"
+      [class.ng-dirty]="control.dirty || control.touched"
+      [placeholder]="placeholder || name"
+      [formControl]="control"
+    />
+
+    @if (help) {
+    <p-inputgroup-addon
+      [class.p-invalid]="isInvalid()"
+      [pTooltip]="help"
+      tooltipPosition="bottom"
+    >
+      <i class="fas fa-circle-info text-blue-400"></i>
+    </p-inputgroup-addon>
+    }
+  </p-inputgroup>
+  @for (error of control.errors | keyvalue; track error.key) {
+  <ng-container
+    *ngIf="error.key === 'required' && (control.dirty || control.touched)"
+  >
+    <p-message severity="error" size="small" variant="simple"
+      >{{ name }} is required</p-message
+    >
+  </ng-container>
+  <ng-container
+    *ngIf="error.key === 'invalidUrl' && (control.dirty || control.touched)"
+  >
+    <p-message severity="error" size="small" variant="simple"
+      >{{ name }} must start with http:// or https://</p-message
+    >
+  </ng-container>
+  }
+</div>

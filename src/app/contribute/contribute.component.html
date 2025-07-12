@@ -1,0 +1,112 @@
+<p-dialog
+  [(visible)]="contributeVisible"
+  [modal]="true"
+  [style]="{ width: '60vw' }"
+  [dismissableMask]="true"
+  [draggable]="false"
+  (onHide)="onCancel()"
+>
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <p-message severity="error" text="Temporarily disabled" />
+      <span class="font-bold whitespace-nowrap">Add a station</span>
+    </div>
+  </ng-template>
+
+  <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="onSubmit()">
+    <form-input
+      [control]="form.controls['name']"
+      name="Name"
+      icon="fas fa-radio"
+    ></form-input>
+
+    <form-input
+      [control]="form.controls['url']"
+      name="URL"
+      icon="fas fa-link"
+      help="The link to the station's media stream.
+For example: https://example.com/stream.mp3"
+    ></form-input>
+
+    <form-input
+      [control]="form.controls['homepage']"
+      name="Website"
+      icon="fas fa-globe"
+    ></form-input>
+
+    <form-input
+      [control]="form.controls['favicon']"
+      name="Icon"
+      icon="fas fa-image"
+    ></form-input>
+
+    <form-autocomplete
+      [control]="form.controls['country']"
+      (completeMethod)="searchCountries($event)"
+      name="Country"
+      icon="fas fa-flag"
+      [optionLabel]="'name'"
+      [suggestions]="(filteredCountries$ | async) || []"
+      (onSelect)="onCountrySelect($event)"
+      [group]="true"
+      [showClear]="true"
+    >
+      <ng-template #item let-item>
+        <div class="flex items-center gap-2">
+          <img
+            [src]="
+              'https://flagcdn.com/w40/' + item.code.toLowerCase() + '.png'
+            "
+            class="rounded-md"
+          />
+          <div>{{ item.name }}</div>
+        </div>
+      </ng-template>
+    </form-autocomplete>
+
+    <form-autocomplete
+      *ngIf="form.get('country')?.value"
+      [control]="form.controls['state']"
+      (completeMethod)="searchStates($event)"
+      name="State"
+      icon="fas fa-map-location-dot"
+      [optionLabel]="'label'"
+      [suggestions]="(filteredStates$ | async) || []"
+      [showClear]="true"
+    >
+    </form-autocomplete>
+
+    <form-autocomplete
+      [control]="form.controls['languages']"
+      (completeMethod)="searchLanguages($event)"
+      name="Languages"
+      icon="fas fa-language"
+      [optionLabel]="'label'"
+      [suggestions]="(filteredLanguages$ | async) || []"
+      [multiple]="true"
+    >
+    </form-autocomplete>
+
+    <form-autocomplete
+      [control]="form.controls['tags']"
+      (completeMethod)="searchTags($event)"
+      name="Tags"
+      icon="fas fa-tag"
+      [optionLabel]="'label'"
+      [suggestions]="(filteredTags$ | async) || []"
+      [multiple]="true"
+      [virtualScroll]="true"
+      [virtualScrollItemSize]="38"
+    >
+    </form-autocomplete>
+
+    <!-- geo/lat input -->
+
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button label="Cancel" severity="secondary" (onClick)="onCancel()" />
+      <p-button label="Add" severity="primary" type="submit" />
+    </div>
+  </form>
+</p-dialog>
+
+<p-toast />

@@ -14,6 +14,7 @@ import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SidebarService } from '../services/sidebar.service';
+import { ContributeComponent } from './contribute/contribute.component';
 @Component({
   selector: 'app-root',
   imports: [
@@ -29,6 +30,7 @@ import { SidebarService } from '../services/sidebar.service';
     NgTemplateOutlet,
     CommonModule,
     RouterModule,
+    ContributeComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -38,6 +40,7 @@ export class AppComponent {
   recentVisible = false;
   favoritesVisible = false;
   drawerVisible = false;
+  contributeVisible = false;
 
   showWorldMapDialog() {
     this.worldMapVisible = true;

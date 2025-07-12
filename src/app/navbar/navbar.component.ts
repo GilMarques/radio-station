@@ -19,6 +19,7 @@ export class NavbarComponent {
   @Output() showRecent = new EventEmitter<void>();
   @Output() showFavorites = new EventEmitter<void>();
   @Output() showMenu = new EventEmitter<void>();
+  @Output() showContribute = new EventEmitter<void>();
 
   items = [
     {

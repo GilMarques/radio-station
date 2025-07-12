@@ -1,0 +1,18 @@
+::ng-deep {
+  .p-inputgroupaddon.p-invalid {
+    border-color: var(--p-inputtext-invalid-border-color);
+    color: var(--p-form-field-invalid-placeholder-color);
+  }
+
+  .p-autocomplete-input-multiple {
+    border-radius: 0 !important;
+  }
+
+  .p-autocomplete-input {
+    border-radius: 0 !important;
+  }
+
+  .p-message .p-message-content {
+    gap: 0 !important;
+  }
+}

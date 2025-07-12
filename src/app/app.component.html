@@ -16,6 +16,7 @@
         (showRecent)="recentVisible = true"
         (showFavorites)="favoritesVisible = true"
         (showMenu)="drawerVisible = true"
+        (showContribute)="contributeVisible = true"
       ></app-navbar>
 
       <main class="main-content">
@@ -44,6 +45,11 @@
     [favoritesVisible]="favoritesVisible"
     (close)="favoritesVisible = false"
   ></app-favorites>
+
+  <app-contribute
+    [contributeVisible]="contributeVisible"
+    (close)="contributeVisible = false"
+  ></app-contribute>
 
   <app-footer></app-footer>
 </div>

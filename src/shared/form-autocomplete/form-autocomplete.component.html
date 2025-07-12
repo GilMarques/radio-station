@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-1">
+  <p-inputgroup>
+    <p-inputgroup-addon [class.p-invalid]="control.invalid && control.touched">
+      <i [class]="icon"></i>
+    </p-inputgroup-addon>
+
+    <p-autocomplete
+      [placeholder]="placeholder || name"
+      [formControl]="control"
+      [class.ng-invalid]="control.invalid"
+      [class.ng-dirty]="control.dirty || control.touched"
+      class="w-full"
+      [styleClass]="'w-full'"
+      [inputStyleClass]="'rounded-none'"
+      [dropdown]="true"
+      [suggestions]="suggestions"
+      [optionLabel]="optionLabel"
+      [group]="group"
+      [appendTo]="'body'"
+      forceSelection="true"
+      dropdownMode="current"
+      completeOnFocus="true"
+      [showClear]="showClear"
+      (onSelect)="onSelect.emit($event)"
+      (completeMethod)="completeMethod.emit($event)"
+      [multiple]="multiple"
+      [virtualScroll]="virtualScroll"
+      [virtualScrollItemSize]="virtualScrollItemSize"
+    >
+      <ng-template *ngIf="itemTemplate" let-item #item>
+        <ng-container
+          *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"
+        ></ng-container>
+      </ng-template>
+    </p-autocomplete>
+  </p-inputgroup>
+
+  @for (error of control.errors | keyvalue; track error.key) {
+  <ng-container
+    *ngIf="error.key === 'required' && (control.dirty || control.touched)"
+  >
+    <p-message severity="error" size="small" variant="simple"
+      >{{ name }} is required</p-message
+    >
+  </ng-container>
+
+  }
+</div>

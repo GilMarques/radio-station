@@ -29,9 +29,30 @@ export class RadioBrowserApiService {
     );
   }
 
-  getServerCountries(baseUrl: string): Observable<RadioBrowserApi.Country[]> {
+  getCountries(baseUrl: string): Observable<RadioBrowserApi.Country[]> {
     return this.http.get<RadioBrowserApi.Country[]>(
       `https://de2.api.radio-browser.info/json/countries`
+    );
+  }
+
+  getStates(
+    baseUrl: string,
+    countryName: string
+  ): Observable<RadioBrowserApi.State[]> {
+    return this.http.get<RadioBrowserApi.State[]>(
+      `https://de2.api.radio-browser.info/json/states/${countryName}`
+    );
+  }
+
+  getLanguages(baseUrl: string): Observable<RadioBrowserApi.Language[]> {
+    return this.http.get<RadioBrowserApi.Language[]>(
+      `https://de2.api.radio-browser.info/json/languages`
+    );
+  }
+
+  getTags(baseUrl: string): Observable<RadioBrowserApi.Tag[]> {
+    return this.http.get<RadioBrowserApi.Tag[]>(
+      `https://de2.api.radio-browser.info/json/tags`
     );
   }
 
@@ -105,12 +126,19 @@ export class RadioBrowserApiService {
         if (!urls || urls.length === 0) {
           return throwError(() => new Error('No base URLs found'));
         }
-        return this.getServerCountries(urls[this.selectIndex].name);
+        return this.getCountries(urls[this.selectIndex].name);
       })
     );
   }
 
   setSelectedIndex(index: number) {
     this.selectIndex = index;
+  }
+
+  addStation(station: RadioBrowserApi.AddStationOptions) {
+    return this.http.post<RadioBrowserApi.Station>(
+      `https://de2.api.radio-browser.info/json/add`,
+      station
+    );
   }
 }

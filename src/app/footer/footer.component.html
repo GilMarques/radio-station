@@ -3,8 +3,34 @@
     <div class="flex items-center gap-2">
       <span class="whitespace-nowrap font-mono">Radio Station 2025</span>
     </div>
-    <p-button id="github" (click)="onGithub()">
-      <i class="fa-brands fa-github"></i>
-    </p-button>
+
+    <div class="flex items-center gap-2">
+      <p-select
+        [options]="urls"
+        [(ngModel)]="selectedUrl"
+        optionLabel="name"
+        class="w-24"
+        size="small"
+        [styleClass]="'font-mono'"
+      >
+        <ng-template #selectedItem let-selectedOption>
+          <div class="flex items-center gap-2" *ngIf="selectedOption">
+            <i class="fa-solid fa-database"></i>
+            <div>{{ selectedOption.name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-button link id="github">
+        <a
+          href="https://github.com/GilMarques"
+          pButton
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </p-button>
+    </div>
   </div>
 </footer>

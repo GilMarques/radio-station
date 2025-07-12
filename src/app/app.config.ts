@@ -13,6 +13,7 @@ import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 
 import { definePreset } from '@primeng/themes';
+import { MessageService } from 'primeng/api';
 
 const Noir = definePreset(Aura, {
   semantic: {
@@ -82,5 +83,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    MessageService,
   ],
 };

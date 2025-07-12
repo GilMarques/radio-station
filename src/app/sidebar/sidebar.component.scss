@@ -38,6 +38,8 @@
     min-width: 80px;
   }
 
+  transition: all 0.15s ease-in-out;
+
   &:hover {
     background-color: var(--p-surface-300);
     transform: scale(1.02);
@@ -67,7 +69,7 @@
 }
 
 .marquee span {
-  padding-right: 120px; /* Spacing between repeats */
+  padding-right: 200px; /* Spacing between repeats */
   white-space: nowrap;
 }
 

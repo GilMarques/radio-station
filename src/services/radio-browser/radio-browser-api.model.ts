@@ -10,6 +10,23 @@ export namespace RadioBrowserApi {
     stationcount: number;
   };
 
+  export type State = {
+    name: string;
+    country: string;
+    stationcount: number;
+  };
+
+  export type Language = {
+    name: string;
+    iso_639: string;
+    stationcount: number;
+  };
+
+  export type Tag = {
+    name: string;
+    stationcount: number;
+  };
+
   export type Station = {
     changeuuid: string;
     stationuuid: string;
@@ -48,6 +65,20 @@ export namespace RadioBrowserApi {
     geo_long: number;
     geo_distance: number | null;
     has_extended_info: boolean;
+  };
+
+  export type AddStationOptions = {
+    name: string;
+    url: string;
+    homepage: string;
+    favicon: string;
+    countrycode: string;
+    state: string;
+    iso_3166_2: string;
+    language: string;
+    tags: string;
+    geo_lat: string;
+    geo_long: string;
   };
 
   export function getThumbnailUrl(station: Station): string {
