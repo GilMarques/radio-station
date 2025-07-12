@@ -56,8 +56,8 @@
             <span
               class="py-2 px-4 rounded-full"
               [style]="{
-                backgroundColor: palette()?.DarkMuted?.hex,
-                color: palette()?.DarkMuted?.bodyTextColor
+                backgroundColor: palette()?.DarkMuted?.hex || '#808080',
+                color: palette()?.DarkMuted?.bodyTextColor || '#ffffff'
               }"
             >
               {{ item.charAt(0).toUpperCase() + item.slice(1) }}
@@ -164,7 +164,7 @@
     <div
       id="shuffleButton"
       [style]="{
-        color: palette()?.DarkVibrant?.hex,
+        color: palette()?.DarkVibrant?.hex || '#808080',
         transition: 'color 0.5s linear',
         fontSize: '20px'
       }"
@@ -179,7 +179,7 @@
     <div
       id="backButton"
       [style]="{
-        color: palette()?.DarkMuted?.hex,
+        color: palette()?.DarkMuted?.hex || '#505050',
         transition: 'color 0.5s linear',
         fontSize: '30px'
       }"
@@ -201,7 +201,7 @@
         color: palette()?.Vibrant?.titleTextColor
       }"
       [ngStyle]="{
-        '--hover-background': palette()?.DarkVibrant?.hex,
+        '--hover-background': palette()?.DarkVibrant?.hex || 'black',
        
       }"
       class="button-animate-scale"
@@ -212,7 +212,7 @@
 
     <div
       [style]="{
-        color: palette()?.DarkMuted?.hex,
+        color: palette()?.DarkMuted?.hex || '#505050',
         transition: 'color 0.5s linear',
         fontSize: '30px'
       }"
@@ -228,7 +228,7 @@
     <ng-container #volumeSlider>
       <div
         [style]="{
-          color: palette()?.DarkMuted?.hex,
+          color: palette()?.DarkMuted?.hex || '#505050',
           transition: 'color 0.5s linear',
           fontSize: '20px'
         }"
@@ -255,7 +255,7 @@
       </div>
       <custom-slider
         [value]="volume()"
-        [primaryColor]="palette()?.Vibrant?.hex"
+        [primaryColor]="palette()?.Vibrant?.hex || '#000000'"
         [trackColor]="trackColor"
         (onChange)="onVolumeChange($event)"
         (onSlideEnd)="onVolumeSlideEnd($event)"

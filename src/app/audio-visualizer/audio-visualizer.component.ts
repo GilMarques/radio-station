@@ -93,19 +93,16 @@ export class AudioVisualizerComponent {
 
     let gradientLeft = 'orangered';
     let gradientRight = 'steelblue';
-    if (palette?.DarkVibrant?.hex) {
-      this.audioMotion.registerGradient('customGradientLeft', {
-        colorStops: [palette?.DarkVibrant?.hex],
-      });
-      gradientLeft = 'customGradientLeft';
-    }
 
-    if (palette?.Vibrant?.hex) {
-      this.audioMotion.registerGradient('customGradientRight', {
-        colorStops: [palette?.Vibrant?.hex],
-      });
-      gradientRight = 'customGradientRight';
-    }
+    this.audioMotion.registerGradient('customGradientLeft', {
+      colorStops: [palette?.DarkVibrant?.hex || '#000000'],
+    });
+    gradientLeft = 'customGradientLeft';
+
+    this.audioMotion.registerGradient('customGradientRight', {
+      colorStops: [palette?.Vibrant?.hex || '#808080'],
+    });
+    gradientRight = 'customGradientRight';
 
     this.audioMotion.setOptions({
       gradientLeft,
@@ -235,7 +232,7 @@ export class AudioVisualizerComponent {
     if (palette?.Muted?.hex) {
       return palette.Muted.hex + '20';
     }
-    return 'black';
+    return '#f0f0f0';
   }
 
   onShare(station: RadioBrowserApi.Station) {
