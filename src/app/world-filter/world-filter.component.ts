@@ -69,7 +69,7 @@ export class WorldFilterComponent {
   }
 
   ngOnInit() {
-    this.radioBrowserService.countries$.subscribe((countries) => {
+    this.radioBrowserService.getCountries$().subscribe((countries) => {
       this.countryList = countries;
       this.getRadioBrowserCountriesByContinent();
     });

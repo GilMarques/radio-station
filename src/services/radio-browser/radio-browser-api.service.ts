@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { RadioBrowserApi } from './radio-browser-api.model';
 
 // https://api.radio-browser.info/
@@ -15,24 +15,9 @@ export class RadioBrowserApiService {
     this.fetchBaseUrls();
   }
 
-  getBaseUrls(): Observable<RadioBrowserApi.BaseUrl[]> {
-    return this.http.get<RadioBrowserApi.BaseUrl[]>(
-      'https://all.api.radio-browser.info/json/servers'
-    );
-  }
-
-  getCountries(baseUrl: string): Observable<RadioBrowserApi.Country[]> {
-    return this.http.get<RadioBrowserApi.Country[]>(
-      `https://${baseUrl}/json/countries`
-    );
-  }
-
   getCountries$(): Observable<RadioBrowserApi.Country[]> {
     return this.selectedBaseUrl$.pipe(
       switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No base URL found'));
-        }
         return this.getCountries(url.name);
       })
     );
@@ -41,9 +26,6 @@ export class RadioBrowserApiService {
   getStates$(countryName: string): Observable<RadioBrowserApi.State[]> {
     return this.selectedBaseUrl$.pipe(
       switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No base URL found'));
-        }
         return this.getStates(url.name, countryName);
       })
     );
@@ -52,9 +34,6 @@ export class RadioBrowserApiService {
   getLanguages$(): Observable<RadioBrowserApi.Language[]> {
     return this.selectedBaseUrl$.pipe(
       switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No base URL found'));
-        }
         return this.getLanguages(url.name);
       })
     );
@@ -63,15 +42,44 @@ export class RadioBrowserApiService {
   getTags$(): Observable<RadioBrowserApi.Tag[]> {
     return this.selectedBaseUrl$.pipe(
       switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No base URL found'));
-        }
         return this.getTags(url.name);
       })
     );
   }
 
-  getStates(
+  getStationsByCountryCode$(
+    countryCode: string
+  ): Observable<RadioBrowserApi.Station[]> {
+    countryCode = countryCode.toLowerCase();
+
+    return this.selectedBaseUrl$.pipe(
+      switchMap((url) => {
+        return this.getStationsList(url.name, countryCode);
+      })
+    );
+  }
+
+  getStationById$(id: string): Observable<RadioBrowserApi.Station[]> {
+    return this.selectedBaseUrl$.pipe(
+      switchMap((url) => {
+        return this.getStationById(url.name, id);
+      })
+    );
+  }
+
+  private getBaseUrls(): Observable<RadioBrowserApi.BaseUrl[]> {
+    return this.http.get<RadioBrowserApi.BaseUrl[]>(
+      'https://all.api.radio-browser.info/json/servers'
+    );
+  }
+
+  private getCountries(baseUrl: string): Observable<RadioBrowserApi.Country[]> {
+    return this.http.get<RadioBrowserApi.Country[]>(
+      `https://${baseUrl}/json/countries`
+    );
+  }
+
+  private getStates(
     baseUrl: string,
     countryName: string
   ): Observable<RadioBrowserApi.State[]> {
@@ -80,17 +88,19 @@ export class RadioBrowserApiService {
     );
   }
 
-  getLanguages(baseUrl: string): Observable<RadioBrowserApi.Language[]> {
+  private getLanguages(
+    baseUrl: string
+  ): Observable<RadioBrowserApi.Language[]> {
     return this.http.get<RadioBrowserApi.Language[]>(
       `https://${baseUrl}/json/languages`
     );
   }
 
-  getTags(baseUrl: string): Observable<RadioBrowserApi.Tag[]> {
+  private getTags(baseUrl: string): Observable<RadioBrowserApi.Tag[]> {
     return this.http.get<RadioBrowserApi.Tag[]>(`https://${baseUrl}/json/tags`);
   }
 
-  getStationsList(
+  private getStationsList(
     baseUrl: string,
     countryCode: string
   ): Observable<RadioBrowserApi.Station[]> {
@@ -111,7 +121,7 @@ export class RadioBrowserApiService {
       );
   }
 
-  getStationById(
+  private getStationById(
     baseUrl: string,
     id: string
   ): Observable<RadioBrowserApi.Station[]> {
@@ -125,10 +135,12 @@ export class RadioBrowserApiService {
   >(null);
   baseUrls$ = this.baseUrlsSubject.asObservable();
 
-  selectedBaseUrlSubject = new BehaviorSubject<RadioBrowserApi.BaseUrl | null>({
-    ip: '123.123.123.123',
-    name: 'de2.api.radio-browser.info',
-  });
+  private selectedBaseUrlSubject = new BehaviorSubject<RadioBrowserApi.BaseUrl>(
+    {
+      ip: '123.123.123.123',
+      name: 'de2.api.radio-browser.info',
+    }
+  );
   selectedBaseUrl$ = this.selectedBaseUrlSubject.asObservable();
 
   private fetchBaseUrls() {
@@ -145,43 +157,6 @@ export class RadioBrowserApiService {
       },
       error: (err) => console.error('Failed to load base URLs', err),
     });
-  }
-
-  getStationsByCountryCode$(
-    countryCode: string
-  ): Observable<RadioBrowserApi.Station[]> {
-    countryCode = countryCode.toLowerCase();
-
-    return this.selectedBaseUrl$.pipe(
-      switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No base URL found'));
-        }
-        return this.getStationsList(url.name, countryCode);
-      })
-    );
-  }
-
-  getStationById$(id: string): Observable<RadioBrowserApi.Station[]> {
-    return this.selectedBaseUrl$.pipe(
-      switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No base URL found'));
-        }
-        return this.getStationById(url.name, id);
-      })
-    );
-  }
-
-  get countries$(): Observable<RadioBrowserApi.Country[]> {
-    return this.selectedBaseUrl$.pipe(
-      switchMap((url) => {
-        if (!url) {
-          return throwError(() => new Error('No base URLs found'));
-        }
-        return this.getCountries(url.name);
-      })
-    );
   }
 
   setSelectedBaseUrl(url: RadioBrowserApi.BaseUrl) {
