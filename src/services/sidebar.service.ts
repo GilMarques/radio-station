@@ -65,6 +65,10 @@ export class SidebarService {
     this.loadingStationsSubject.next(loading);
   }
 
+  setLoading(loading: boolean) {
+    this.loadingSubject.next(loading);
+  }
+
   setStations(countryCode: string | null, stations: RadioBrowserApi.Station[]) {
     this.stationsSubject.next(stations);
     this.countryCodeSubject.next(countryCode);
@@ -75,6 +79,7 @@ export class SidebarService {
       this.setLoadingStations(false);
       return;
     }
+    this.setLoading(true);
     this.setLoadingStations(true);
     this.radioBrowserService.getStationById$(id).subscribe((station) => {
       this.setSelectedStation(station[0]);
