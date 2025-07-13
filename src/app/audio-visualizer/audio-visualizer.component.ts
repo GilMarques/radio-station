@@ -110,11 +110,12 @@ export class AudioVisualizerComponent {
     });
   }
 
+  @ViewChild('audioVisualizer') audioVisualizer!: ElementRef<HTMLDivElement>;
   private watchAudioElementResize() {
     if (!this.containerElement) return;
     const ro = new ResizeObserver(() => {
       const width = window.innerWidth;
-      const height = window.innerHeight - 450;
+      const height = this.containerElement!.clientHeight;
 
       this.audioMotion!.setCanvasSize(width, height);
     });

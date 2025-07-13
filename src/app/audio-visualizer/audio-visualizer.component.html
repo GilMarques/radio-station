@@ -1,9 +1,11 @@
 <div
-  class="rounded-3xl m-6 p-6 audio-visualizer animate-fadein animate-duration-500"
+  class="rounded-3xl m-6 p-6 audio-visualizer animate-fadein animate-duration-500 flex flex-col justify-between"
   [style]="{
     backgroundColor: backgroundColor,
-    transition: 'background-color 0.5s linear'
+    transition: 'background-color 0.5s linear',
+    height: 'calc(100vh - 200px)'
   }"
+  #audioVisualizer
 >
   <div class="md:flex items-start justify-between gap-4">
     <div class="flex items-center self-start gap-5">

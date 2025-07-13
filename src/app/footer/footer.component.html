@@ -12,11 +12,11 @@
         size="small"
         [variant]="'filled'"
         [styleClass]="'font-mono'"
-        [disabled]="((baseUrls$ | async) || [])?.length === 0"
+        [disabled]="(baseUrls$ | async)?.length === 0"
         (onChange)="onBaseUrlChange($event)"
       >
         <ng-template #selectedItem let-selectedOption>
-          <div class="flex items-center gap-2" *ngIf="selectedOption">
+          <div class="flex items-center gap-2">
             <i class="fa-solid fa-database"></i>
             <span>{{ selectedOption.label.toUpperCase() }}</span>
           </div>
