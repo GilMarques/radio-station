@@ -230,10 +230,10 @@ export class AudioVisualizerComponent {
 
   get backgroundColor() {
     const hex = this.storageService.isDark()
-      ? this.palette()?.Vibrant?.hex
-      : this.palette()?.LightVibrant?.hex;
+      ? this.palette()?.Vibrant?.hex || '#000000'
+      : this.palette()?.LightVibrant?.hex || '#ffffff';
 
-    return hex ? hex + '50' : 'white';
+    return hex + '50';
   }
 
   get tagsBackgroundColor() {
@@ -310,8 +310,8 @@ export class AudioVisualizerComponent {
 
   get playButtonTextColor() {
     const hex = this.storageService.isDark()
-      ? this.palette()?.LightMuted?.titleTextColor || '#ffffff'
-      : this.palette()?.Vibrant?.titleTextColor || '#000000';
+      ? this.palette()?.LightMuted?.titleTextColor || '#000000'
+      : this.palette()?.Vibrant?.titleTextColor || '#fffffff';
 
     return hex || '#ffffff';
   }

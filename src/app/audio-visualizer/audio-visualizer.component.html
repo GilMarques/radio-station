@@ -43,6 +43,10 @@
             [ngClass]="{
               'favorite-wrapper': isFavorite(selectedStation().stationuuid)
             }"
+            [ngStyle]="{
+              '--fill-color':
+                this.palette()?.Vibrant?.bodyTextColor || '#000000'
+            }"
           >
             <i
               class="fa-regular fa-fw fa-circle-check"
