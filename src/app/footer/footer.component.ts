@@ -4,10 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 
 import { SelectChangeEvent, SelectModule } from 'primeng/select';
+import { TooltipModule } from 'primeng/tooltip';
 import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
+import { StorageService } from '../../services/storage.service';
 @Component({
   selector: 'app-footer',
-  imports: [ButtonModule, SelectModule, FormsModule, CommonModule],
+  imports: [
+    ButtonModule,
+    SelectModule,
+    FormsModule,
+    CommonModule,
+    TooltipModule,
+  ],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })
@@ -18,6 +26,13 @@ export class FooterComponent {
   selectedUrl: { name: string; ip: string; label: string } | null = null;
 
   selectedBaseUrl$ = this.radioBrowserApiService.selectedBaseUrl$;
+
+  storageService = inject(StorageService);
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element!.classList.toggle('dark');
+    this.storageService.toggleDarkMode();
+  }
 
   ngOnInit() {
     this.selectedBaseUrl$.subscribe((url) => {

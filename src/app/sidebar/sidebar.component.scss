@@ -17,7 +17,7 @@
   font-size: 24px;
   min-height: 100px !important;
   border-radius: 16px;
-  background-color: var(--p-surface-200);
+
   padding: 18px;
   text-overflow: ellipsis;
   display: flex;
@@ -41,7 +41,6 @@
   transition: all 0.15s ease-in-out;
 
   &:hover {
-    background-color: var(--p-surface-300);
     transform: scale(1.02);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }

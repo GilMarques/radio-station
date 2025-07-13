@@ -12,6 +12,11 @@
 
 .slider-wrapper ::ng-deep .p-slider-handle {
   opacity: 0 !important;
+  background-color: white;
+}
+
+.slider-wrapper ::ng-deep .p-slider-handle::before {
+  background-color: white;
 }
 
 .slider-wrapper ::ng-deep .p-slider-handle:hover,

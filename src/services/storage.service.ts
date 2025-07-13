@@ -18,6 +18,22 @@ export class StorageService {
     localStorage.removeItem(key);
   }
 
+  constructor() {}
+
+  isDark = signal<boolean>(false);
+
+  getDarkMode() {
+    this.isDark.set(this.get('darkMode'));
+  }
+
+  toggleDarkMode() {
+    this.isDark.update((prev) => {
+      const newValue = !prev;
+      this.set('darkMode', newValue);
+      return newValue;
+    });
+  }
+
   recent = signal<RadioBrowserApi.Station[]>([]);
 
   addRecent(station: RadioBrowserApi.Station) {

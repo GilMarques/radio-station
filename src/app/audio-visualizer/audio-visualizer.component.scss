@@ -48,8 +48,4 @@ audio {
   border-radius: 50%;
   color: white;
   transition: background-color 500ms linear;
-
-  &:hover {
-    background-color: var(--hover-background);
-  }
 }

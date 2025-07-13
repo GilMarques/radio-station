@@ -1,4 +1,6 @@
-<footer class="bg-surface-300 fixed left-0 bottom-0 w-full p-5">
+<footer
+  class="bg-surface-300 dark:bg-surface-900 fixed left-0 bottom-0 w-full p-5"
+>
   <div class="flex justify-around">
     <div class="flex items-center gap-2">
       <span class="whitespace-nowrap font-mono">Radio Station 2025</span>
@@ -16,7 +18,7 @@
         (onChange)="onBaseUrlChange($event)"
       >
         <ng-template #selectedItem let-selectedOption>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2" *ngIf="selectedOption">
             <i class="fa-solid fa-database"></i>
             <span>{{ selectedOption.label.toUpperCase() }}</span>
           </div>
@@ -30,16 +32,23 @@
         </ng-template>
       </p-select>
 
-      <p-button link id="github">
-        <a
-          href="https://github.com/GilMarques"
-          pButton
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i class="fa-brands fa-github"></i>
-        </a>
-      </p-button>
+      <div>
+        <p-button (onClick)="toggleDarkMode()">
+          <i *ngIf="storageService.isDark()" class="fa fa-moon"></i>
+          <i *ngIf="!storageService.isDark()" class="fa fa-sun"></i>
+        </p-button>
+
+        <p-button link id="github">
+          <a
+            href="https://github.com/GilMarques"
+            pButton
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fa-brands fa-github"></i>
+          </a>
+        </p-button>
+      </div>
     </div>
   </div>
 </footer>

@@ -94,13 +94,21 @@ export class AudioVisualizerComponent {
     let gradientLeft = 'orangered';
     let gradientRight = 'steelblue';
 
+    const leftHex = this.storageService.isDark()
+      ? palette?.LightVibrant?.hex || '#000000'
+      : palette?.DarkVibrant?.hex || '#000000';
+
     this.audioMotion.registerGradient('customGradientLeft', {
-      colorStops: [palette?.DarkVibrant?.hex || '#000000'],
+      colorStops: [leftHex],
     });
     gradientLeft = 'customGradientLeft';
 
+    const rightHex = this.storageService.isDark()
+      ? palette?.Vibrant?.hex || '#808080'
+      : palette?.Vibrant?.hex || '#808080';
+
     this.audioMotion.registerGradient('customGradientRight', {
-      colorStops: [palette?.Vibrant?.hex || '#808080'],
+      colorStops: [rightHex],
     });
     gradientRight = 'customGradientRight';
 
@@ -221,19 +229,91 @@ export class AudioVisualizerComponent {
   }
 
   get backgroundColor() {
-    const palette = this.palette();
-    if (palette?.LightVibrant?.hex) {
-      return palette.LightVibrant.hex + '50';
-    }
-    return 'white';
+    const hex = this.storageService.isDark()
+      ? this.palette()?.Vibrant?.hex
+      : this.palette()?.LightVibrant?.hex;
+
+    return hex ? hex + '50' : 'white';
+  }
+
+  get tagsBackgroundColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightMuted?.hex
+      : this.palette()?.DarkMuted?.hex;
+
+    return hex || '#808080';
+  }
+
+  get tagsTextColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightMuted?.bodyTextColor
+      : this.palette()?.DarkMuted?.bodyTextColor;
+
+    return hex || '#ffffff';
+  }
+
+  get buttonPrimaryColor() {
+    return this.palette()?.Vibrant?.hex;
+  }
+
+  get buttonPrimaryColorSelected() {
+    return this.palette()?.DarkVibrant?.hex;
+  }
+
+  get buttonPrimaryTextColorSelected() {
+    return this.palette()?.DarkVibrant?.bodyTextColor;
+  }
+
+  get buttonTextColor() {
+    return this.palette()?.Vibrant?.bodyTextColor;
+  }
+
+  get shuffleColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightVibrant?.hex
+      : this.palette()?.DarkVibrant?.hex || '#808080';
+
+    return hex;
+  }
+
+  get actionsColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightMuted?.hex || '#ffffff'
+      : this.palette()?.DarkMuted?.hex || '#505050';
+
+    return hex;
+  }
+
+  get sliderColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightVibrant?.hex || '#ffffff'
+      : this.palette()?.Vibrant?.hex || '#000000';
+
+    return hex;
   }
 
   get trackColor() {
-    const palette = this.palette();
-    if (palette?.Muted?.hex) {
-      return palette.Muted.hex + '20';
-    }
-    return '#f0f0f0';
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightVibrant?.hex || '#ffffff'
+      : this.palette()?.Muted?.hex || '#000000';
+
+    return hex ? hex + '20' : '#f0f0f0';
+  }
+
+  get playButtonBackgroundColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightMuted?.hex || '#ffffff'
+      : this.palette()?.Vibrant?.hex || '#000000';
+
+    return hex;
+  }
+
+  get playButtonTextColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.LightMuted?.titleTextColor || '#ffffff'
+      : this.palette()?.Vibrant?.titleTextColor || '#000000';
+
+    return hex || '#ffffff';
   }
 
   onShare(station: RadioBrowserApi.Station) {

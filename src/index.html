@@ -14,4 +14,10 @@
   <body>
     <app-root></app-root>
   </body>
+
+  <script>
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
 </html>

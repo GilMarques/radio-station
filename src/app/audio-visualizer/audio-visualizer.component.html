@@ -58,8 +58,8 @@
             <span
               class="py-2 px-4 rounded-full"
               [style]="{
-                backgroundColor: palette()?.DarkMuted?.hex || '#808080',
-                color: palette()?.DarkMuted?.bodyTextColor || '#ffffff'
+                backgroundColor: tagsBackgroundColor,
+                color: tagsTextColor
               }"
             >
               {{ item.charAt(0).toUpperCase() + item.slice(1) }}
@@ -89,25 +89,26 @@
       </div>
     </div>
 
-    <div class="flex mt-2 md:mt-0 md:flex-col md:items-end justify-end gap-2">
+    <div
+      class="flex mt-2 md:mt-0 md:flex-col md:items-end justify-end gap-2"
+      [ngStyle]="{
+        '--p-button-primary-background': buttonPrimaryColor,
+        '--p-button-primary-color': buttonTextColor,
+        '--p-button-primary-border-color': buttonPrimaryColor,
+        '--p-button-primary-hover-background': buttonPrimaryColorSelected,
+        '--p-button-primary-hover-color': buttonPrimaryTextColorSelected,
+        '--p-button-primary-hover-border-color': buttonPrimaryColorSelected,
+        '--p-button-primary-active-background': buttonPrimaryColorSelected,
+        '--p-button-primary-active-color':
+          palette()?.DarkVibrant?.bodyTextColor,
+        '--p-button-primary-active-border-color': buttonPrimaryColorSelected
+      }"
+    >
       <p-button
         *ngIf="selectedStation().homepage"
         label="Visit Website"
         icon="fas fa-globe"
         rounded
-        [ngStyle]="{
-          '--p-button-primary-background': palette()?.Vibrant?.hex,
-          '--p-button-primary-color': palette()?.Vibrant?.bodyTextColor,
-          '--p-button-primary-border-color': palette()?.Vibrant?.hex,
-          '--p-button-primary-hover-background': palette()?.DarkVibrant?.hex,
-          '--p-button-primary-hover-color':
-            palette()?.DarkVibrant?.bodyTextColor,
-          '--p-button-primary-hover-border-color': palette()?.DarkVibrant?.hex,
-          '--p-button-primary-active-background': palette()?.DarkVibrant?.hex,
-          '--p-button-primary-active-color':
-            palette()?.DarkVibrant?.bodyTextColor,
-          '--p-button-primary-active-border-color': palette()?.DarkVibrant?.hex
-        }"
         [styleClass]="'whitespace-nowrap'"
         class="button-animate-scale"
         (click)="visitHomepage(selectedStation())"
@@ -118,39 +119,22 @@
         label="Share"
         icon="fas fa-share-from-square"
         rounded
-        [ngStyle]="{
-          '--p-button-primary-background': palette()?.Vibrant?.hex,
-          '--p-button-primary-color': palette()?.Vibrant?.bodyTextColor,
-          '--p-button-primary-border-color': palette()?.Vibrant?.hex,
-          '--p-button-primary-hover-background': palette()?.DarkVibrant?.hex,
-          '--p-button-primary-hover-color':
-            palette()?.DarkVibrant?.bodyTextColor,
-          '--p-button-primary-hover-border-color': palette()?.DarkVibrant?.hex,
-          '--p-button-primary-active-background': palette()?.DarkVibrant?.hex,
-          '--p-button-primary-active-color':
-            palette()?.DarkVibrant?.bodyTextColor,
-          '--p-button-primary-active-border-color': palette()?.DarkVibrant?.hex
-        }"
         class="button-animate-scale"
         (click)="onShare(selectedStation())"
       >
       </p-button>
     </div>
   </div>
-  <!-- 
-  Debug palette
 
-  <div *ngIf="palette()">
-    <div class="flex gap-2 mt-4">
-      <ng-container *ngFor="let key of palette() | keyvalue">
-        <div
-          class="w-8 h-8 rounded"
-          [style.background]="'rgb(' + key.value?.rgb!.join(',') + ')'"
-          [pTooltip]="key.key + ': ' + key.value"
-          tooltipPosition="top"
-        ></div>
-      </ng-container>
-    </div>
+  <!-- <div class="flex gap-2 mt-4">
+    <ng-container *ngFor="let key of palette() | keyvalue">
+      <div
+        class="w-8 h-8 rounded"
+        [style.background]="key.value?.hex"
+        [pTooltip]="key.key + ': ' + key.value"
+        tooltipPosition="top"
+      ></div>
+    </ng-container>
   </div> -->
 
   <div id="container" class="w-full flex justify-center"></div>
@@ -166,7 +150,7 @@
     <div
       id="shuffleButton"
       [style]="{
-        color: palette()?.DarkVibrant?.hex || '#808080',
+        color: shuffleColor,
         transition: 'color 0.5s linear',
         fontSize: '20px'
       }"
@@ -181,7 +165,7 @@
     <div
       id="backButton"
       [style]="{
-        color: palette()?.DarkMuted?.hex || '#505050',
+        color: actionsColor,
         transition: 'color 0.5s linear',
         fontSize: '30px'
       }"
@@ -199,12 +183,8 @@
       [pTooltip]="!isPlaying() ? 'Play' : 'Pause'"
       tooltipPosition="top"
       [style]="{
-        backgroundColor: palette()?.Vibrant?.hex,
-        color: palette()?.Vibrant?.titleTextColor
-      }"
-      [ngStyle]="{
-        '--hover-background': palette()?.DarkVibrant?.hex || 'black',
-       
+        backgroundColor: playButtonBackgroundColor,
+        color: playButtonTextColor
       }"
       class="button-animate-scale"
     >
@@ -214,7 +194,7 @@
 
     <div
       [style]="{
-        color: palette()?.DarkMuted?.hex || '#505050',
+        color: actionsColor,
         transition: 'color 0.5s linear',
         fontSize: '30px'
       }"
@@ -230,7 +210,7 @@
     <ng-container #volumeSlider>
       <div
         [style]="{
-          color: palette()?.DarkMuted?.hex || '#505050',
+          color: actionsColor,
           transition: 'color 0.5s linear',
           fontSize: '20px'
         }"
@@ -257,7 +237,7 @@
       </div>
       <custom-slider
         [value]="volume()"
-        [primaryColor]="palette()?.Vibrant?.hex || '#000000'"
+        [primaryColor]="sliderColor"
         [trackColor]="trackColor"
         (onChange)="onVolumeChange($event)"
         (onSlideEnd)="onVolumeSlideEnd($event)"

@@ -14,6 +14,7 @@ import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SidebarService } from '../services/sidebar.service';
+import { StorageService } from '../services/storage.service';
 import { ContributeComponent } from './contribute/contribute.component';
 @Component({
   selector: 'app-root',
@@ -59,7 +60,11 @@ export class AppComponent {
           this.drawerVisible = false;
         }
       });
+
+    this.storageService.getDarkMode();
   }
 
   constructor() {}
+
+  storageService = inject(StorageService);
 }
