@@ -40,6 +40,9 @@
             "
             tooltipPosition="top"
             class="button-animate-scale"
+            [ngClass]="{
+              'favorite-wrapper': isFavorite(selectedStation().stationuuid)
+            }"
           >
             <i
               class="fa-regular fa-fw fa-circle-check"
