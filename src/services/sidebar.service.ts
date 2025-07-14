@@ -221,7 +221,7 @@ export class SidebarService {
   }
 
   http = inject(HttpClient);
-  paletteProxyUrl = 'http://localhost:3000';
+  paletteProxyUrl = 'https://radio-station-proxy.ew.r.appspot.com';
 
   getPalette(imageUrl: string): Observable<{ palette: Palette }> {
     return this.http.get<{ palette: Palette }>(

@@ -3,17 +3,20 @@ import { parseICO } from "icojs";
 import fetch from "node-fetch";
 import { Vibrant } from "node-vibrant/node";
 
+import dotenv from "dotenv";
+dotenv.config();
+
+const PORT = process.env.PORT || 8080;
+
 import cors from "cors";
 
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:4200", // Replace with your actual frontend origin
+    origin: ["http://localhost:4200", "https://gilmarques.github.io"],
   })
 );
-
-const PORT = 3000;
 
 // Helper to download the image and return as Buffer + content type
 async function fetchImage(url) {

@@ -44,8 +44,7 @@
               'favorite-wrapper': isFavorite(selectedStation().stationuuid)
             }"
             [ngStyle]="{
-              '--fill-color':
-                this.palette()?.Vibrant?.bodyTextColor || '#000000'
+              '--fill-color': favoritesFillColor
             }"
           >
             <i
@@ -246,7 +245,7 @@
         [value]="volume()"
         [primaryColor]="sliderColor"
         [trackColor]="trackColor"
-        (onChange)="onVolumeChange($event)"
+        (onChange)="setVolume($event)"
         (onSlideEnd)="onVolumeSlideEnd($event)"
       ></custom-slider>
     </ng-container>

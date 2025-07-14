@@ -69,6 +69,10 @@ export class AudioVisualizerComponent {
 
       this.changeAudioMotionColor(palette);
     });
+
+    effect(() => {
+      this.onVolumeChange(this.volume());
+    });
   }
 
   toggleFavorite() {
@@ -84,8 +88,6 @@ export class AudioVisualizerComponent {
     }
 
     this.changeAudioMotionColor(palette);
-
-    this.onVolumeChange(this.volume());
   }
 
   private changeAudioMotionColor(palette: Palette | null) {
@@ -190,9 +192,11 @@ export class AudioVisualizerComponent {
     return 2;
   }
 
-  onVolumeChange(value: number) {
+  setVolume(value: number) {
     this.volume.set(value);
+  }
 
+  private onVolumeChange(value: number) {
     if (this.audioElement) this.audioElement.volume = Math.pow(value / 100, 2);
   }
 
@@ -311,9 +315,17 @@ export class AudioVisualizerComponent {
   get playButtonTextColor() {
     const hex = this.storageService.isDark()
       ? this.palette()?.LightMuted?.titleTextColor || '#000000'
-      : this.palette()?.Vibrant?.titleTextColor || '#fffffff';
+      : this.palette()?.Vibrant?.titleTextColor || '#ffffff';
 
-    return hex || '#ffffff';
+    return hex;
+  }
+
+  get favoritesFillColor() {
+    const hex = this.storageService.isDark()
+      ? this.palette()?.Vibrant?.bodyTextColor || '#000000'
+      : this.palette()?.Vibrant?.bodyTextColor || '#ffffff';
+
+    return hex;
   }
 
   onShare(station: RadioBrowserApi.Station) {
