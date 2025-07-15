@@ -19,8 +19,12 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Palette } from '../../services/vibrant.model';
 import { CustomSliderComponent } from '../../shared/custom-slider/custom-slider.component';
 
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ChipModule } from 'primeng/chip';
+import { DrawerModule } from 'primeng/drawer';
+import { MenuModule } from 'primeng/menu';
 import { PopoverModule } from 'primeng/popover';
+import { Subscription } from 'rxjs';
 import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { SidebarService } from '../../services/sidebar.service';
 import { StorageService } from '../../services/storage.service';
@@ -36,6 +40,8 @@ import { StorageService } from '../../services/storage.service';
     CustomSliderComponent,
     PopoverModule,
     ChipModule,
+    MenuModule,
+    DrawerModule,
   ],
   templateUrl: './audio-visualizer.component.html',
   styleUrl: './audio-visualizer.component.scss',
@@ -79,7 +85,23 @@ export class AudioVisualizerComponent {
     this.storageService.toggleFavorite(this.selectedStation()!);
   }
 
+  breakpointSub!: Subscription;
+  breakpointObserver = inject(BreakpointObserver);
+
   ngAfterViewInit() {
+    this.breakpointSub = this.breakpointObserver
+      .observe([
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .subscribe((result) => {
+        if (result.matches && this.drawerVisible) {
+          this.drawerVisible = false;
+        }
+      });
+
     const palette = this.palette();
 
     if (!this.audioMotion) {
@@ -215,6 +237,9 @@ export class AudioVisualizerComponent {
     }
   }
 
+  onRandom() {
+    this.sidebarService.onRandomStation();
+  }
   onBack() {
     this.sidebarService.onPreviousStation();
   }
@@ -390,6 +415,8 @@ export class AudioVisualizerComponent {
 
     this.previousVolume.set(value);
   }
+
+  drawerVisible = false;
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {

@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TabsModule } from 'primeng/tabs';
 
+import { DrawerModule } from 'primeng/drawer';
 import { RadioBrowserApi } from '../../services/radio-browser/radio-browser-api.model';
 import { RadioBrowserApiService } from '../../services/radio-browser/radio-browser-api.service';
 import { SidebarService } from '../../services/sidebar.service';
@@ -27,6 +28,7 @@ import { WorldMapComponent } from './world-map/world-map.component';
     TabsModule,
     DialogModule,
     ButtonModule,
+    DrawerModule,
   ],
   templateUrl: './world-filter.component.html',
   styleUrl: './world-filter.component.scss',
@@ -100,6 +102,7 @@ export class WorldFilterComponent {
   }
 
   onSelectedCountry(country: RadioBrowserApi.Country) {
+    this.drawerVisible = false;
     this.selectedCountry.set(country);
   }
 
@@ -117,4 +120,6 @@ export class WorldFilterComponent {
     this.hoveredCountry.set(null);
     this.close.emit();
   }
+
+  drawerVisible = false;
 }

@@ -1,12 +1,12 @@
 <footer
-  class="bg-surface-300 dark:bg-surface-900 fixed left-0 bottom-0 w-full p-5"
+  class="bg-surface-300 dark:bg-surface-900 fixed left-0 bottom-0 w-full sm:p-5 h-[100px] flex items-center justify-center"
 >
-  <div class="flex justify-around">
+  <div class="flex justify-around gap-4">
     <div class="flex items-center gap-2">
       <span class="whitespace-nowrap font-mono">Radio Station 2025</span>
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 flex-wrap-reverse">
       <p-select
         [options]="(baseUrls$ | async) || []"
         [(ngModel)]="selectedUrl"

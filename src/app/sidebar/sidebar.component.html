@@ -5,11 +5,11 @@
     <span class="font-bold whitespace-nowrap">Stations</span>
 
     <div class="flex items-center gap-2">
-      <p-button (click)="onGlobeClick()">
+      <p-button (onClick)="onGlobeClick()">
         <i class="fas fa-globe"></i>
       </p-button>
 
-      <p-button (click)="menu.show($event)">
+      <p-button (onClick)="menu.show($event)">
         <i class="fas fa-filter"></i>
       </p-button>
       <p-menu #menu [model]="filters" [popup]="true">

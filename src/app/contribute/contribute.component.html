@@ -8,7 +8,20 @@
 >
   <ng-template #header>
     <div class="inline-flex items-center justify-center gap-2">
-      <p-message severity="error" text="Temporarily disabled" />
+      <div>
+        <p-message
+          class="hidden sm:inline-block"
+          severity="error"
+          text="Temporarily disabled"
+        />
+        <p-message
+          class="sm:hidden"
+          severity="error"
+          icon="fa fa-circle-exclamation"
+          pTooltip="Temporarily disabled"
+          tooltipPosition="bottom"
+        />
+      </div>
       <span class="font-bold whitespace-nowrap">Add a station</span>
     </div>
   </ng-template>

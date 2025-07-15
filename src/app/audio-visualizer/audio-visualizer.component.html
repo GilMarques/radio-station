@@ -1,5 +1,5 @@
 <div
-  class="rounded-3xl m-6 p-6 audio-visualizer animate-fadein animate-duration-500 flex flex-col justify-between"
+  class="rounded-3xl m-2 sm:m-6 p-6 audio-visualizer animate-fadein animate-duration-500 flex flex-col justify-between"
   [style]="{
     backgroundColor: backgroundColor,
     transition: 'background-color 0.5s linear',
@@ -9,14 +9,14 @@
 >
   <div class="md:flex items-start justify-between gap-4">
     <div class="flex items-center self-start gap-5">
-      <div class="min-w-32 flex justify-center">
+      <div class="min-w-16 sm:min-w-32 flex justify-center">
         <img
           #stationImg
           *ngIf="getThumbnailUrl(selectedStation())"
           [src]="getThumbnailUrl(selectedStation())"
           alt="{{ selectedStation().name }}"
           title="{{ selectedStation().name }}"
-          class="w-32 rounded-xl"
+          class="w-16 sm:w-32 rounded-xl"
           (error)="onImageError($event)"
         />
 
@@ -59,7 +59,10 @@
           </div>
         </div>
 
-        <div *ngIf="selectedStation().tags" class="flex flex-wrap gap-2">
+        <div
+          *ngIf="selectedStation().tags"
+          class="hidden sm:flex flex-wrap gap-2"
+        >
           <ng-container *ngFor="let item of selectedStation()!.tags.split(',')">
             <span
               class="py-2 px-4 rounded-full"
@@ -74,7 +77,7 @@
         </div>
 
         <div
-          class="flex items-center gap-2"
+          class="hidden sm:flex items-center gap-2"
           *ngIf="selectedStation().countrycode && selectedStation()!.country"
         >
           <img
@@ -96,7 +99,46 @@
     </div>
 
     <div
-      class="flex mt-2 md:mt-0 md:flex-col md:items-end justify-end gap-2"
+      *ngIf="selectedStation().tags"
+      class="sm:hidden flex flex-wrap gap-2 mt-2"
+    >
+      <ng-container *ngFor="let item of selectedStation()!.tags.split(',')">
+        <span
+          class="py-2 px-4 rounded-full"
+          [style]="{
+            backgroundColor: tagsBackgroundColor,
+            color: tagsTextColor
+          }"
+        >
+          {{ item.charAt(0).toUpperCase() + item.slice(1) }}
+        </span>
+      </ng-container>
+    </div>
+
+    <div
+      class="sm:hidden flex flex-row-reverse items-center gap-2 mt-2"
+      *ngIf="selectedStation().countrycode && selectedStation()!.country"
+    >
+      <img
+        [src]="
+          'https://flagcdn.com/w40/' +
+          selectedStation().countrycode.toLowerCase() +
+          '.png'
+        "
+        alt="{{ selectedStation().countrycode }}"
+        class="rounded-md"
+      />
+      <div>
+        {{ selectedStation().country }}
+        <span *ngIf="selectedStation().state">
+          -
+          {{ selectedStation().state }}</span
+        >
+      </div>
+    </div>
+
+    <div
+      class="hidden flex-row sm:flex mt-2 md:mt-0 md:flex-col md:items-end justify-end gap-2"
       [ngStyle]="{
         '--p-button-primary-background': buttonPrimaryColor,
         '--p-button-primary-color': buttonTextColor,
@@ -160,10 +202,10 @@
         transition: 'color 0.5s linear',
         fontSize: '20px'
       }"
-      (click)="onBack()"
+      (click)="onRandom()"
       pTooltip="Random Station"
       tooltipPosition="top"
-      class="button-animate-scale"
+      class="hidden sm:block button-animate-scale"
     >
       <i class="fa-solid fa-dice"></i>
     </div>
@@ -213,7 +255,15 @@
       <i class="fa-solid fa-forward-step"></i>
     </div>
 
-    <ng-container #volumeSlider>
+    <p-button
+      text
+      class="absolute right-12 sm:hidden"
+      (click)="drawerVisible = true"
+    >
+      <i class="fas fa-ellipsis-v"></i>
+    </p-button>
+
+    <div class="hidden sm:flex items-center gap-2" #volumeSlider>
       <div
         [style]="{
           color: actionsColor,
@@ -248,6 +298,52 @@
         (onChange)="setVolume($event)"
         (onSlideEnd)="onVolumeSlideEnd($event)"
       ></custom-slider>
-    </ng-container>
+    </div>
   </div>
 </div>
+
+<p-drawer [(visible)]="drawerVisible" position="bottom">
+  <ng-template #headless>
+    <div
+      class="flex flex-col gap-4 bg-surface-200 dark:bg-surface-900 p-4"
+      style="border-radius: 16px 16px 0px 0px"
+    >
+      <p-button
+        *ngIf="!isFavorite(selectedStation().stationuuid)"
+        [styleClass]="'w-full'"
+        label="Add To Favorites"
+        icon="fa fa-heart"
+        (click)="toggleFavorite()"
+      ></p-button>
+
+      <p-button
+        *ngIf="isFavorite(selectedStation().stationuuid)"
+        [styleClass]="'w-full'"
+        label="Remove From Favorites"
+        icon="fa fa-heart-crack"
+        (click)="toggleFavorite()"
+      ></p-button>
+
+      <p-button
+        [styleClass]="'w-full'"
+        label="Visit Website"
+        icon="fa fa-globe"
+        (click)="visitHomepage(selectedStation())"
+      ></p-button>
+
+      <p-button
+        [styleClass]="'w-full'"
+        label="Share"
+        icon="fa fa-share"
+        (click)="onShare(selectedStation())"
+      ></p-button>
+
+      <p-button
+        [styleClass]="'w-full'"
+        label="Random Station"
+        icon="fa fa-dice"
+        (click)="onRandom()"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-drawer>

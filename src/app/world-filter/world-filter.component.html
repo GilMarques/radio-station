@@ -9,12 +9,13 @@
 >
   <ng-template #header>
     <div class="inline-flex items-center justify-center gap-2">
-      <span class="font-bold whitespace-nowrap">World Map</span>
+      <span class="font-bold whitespace-nowrap">Pick a Country</span>
     </div>
   </ng-template>
 
-  <div class="flex h-full gap-2" *ngIf="worldMapVisible">
+  <div class="relative flex h-full gap-2" *ngIf="worldMapVisible">
     <app-world-list
+      class="hidden sm:block sm:max-w-[200px]"
       [countriesByContinent]="radioBrowserCountriesByContinent"
       (selectedCountry)="onSelectedCountry($event)"
       (hoveredCountry)="onHoveredCountry($event)"
@@ -22,12 +23,35 @@
     ></app-world-list>
     <app-world-map
       #worldMap
-      class="flex-1 world-map rounded-lg"
+      class="sm:h-auto flex-1 world-map rounded-lg"
       [countryList]="countryList"
       [hoveredCountry]="hoveredCountry()"
       [selectedCountry]="selectedCountry()"
       (onSelectedCountry)="onSelectedCountry($event)"
       (onSelectedStations)="onSelectedStations($event)"
     ></app-world-map>
+
+    <p-button
+      class="absolute top-2 left-2 sm:hidden"
+      icon="fa fa-ellipsis-v"
+      label="List"
+      (onClick)="drawerVisible = true"
+    />
   </div>
 </p-dialog>
+
+<p-drawer [(visible)]="drawerVisible" position="bottom">
+  <ng-template #headless>
+    <div
+      class="h-[50vh] bg-surface-100 dark:bg-surface-900"
+      style="border-radius: 16px 16px 0px 0px"
+    >
+      <app-world-list
+        [countriesByContinent]="radioBrowserCountriesByContinent"
+        (selectedCountry)="onSelectedCountry($event)"
+        (hoveredCountry)="onHoveredCountry($event)"
+        (unhoveredCountry)="onUnhoveredCountry()"
+      ></app-world-list>
+    </div>
+  </ng-template>
+</p-drawer>
